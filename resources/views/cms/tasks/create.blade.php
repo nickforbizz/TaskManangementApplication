@@ -3,7 +3,7 @@
 @section('content')
 <div class="page-inner">
     <div class="page-header">
-        <h4 class="page-title"> Products </h4>
+        <h4 class="page-title"> Tasks </h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
                 <a href="#">
@@ -14,7 +14,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Products</a>
+                <a href="#">tasks</a>
             </li>
             <li class="separator">
                 <i class="flaticon-right-arrow"></i>
@@ -32,7 +32,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Add Record</h4>
-                        <a href="{{ route('products.index') }}" class="btn btn-primary btn-round ml-auto" >
+                        <a href="{{ route('tasks.index') }}" class="btn btn-primary btn-round ml-auto" >
                             <i class="flaticon-left-arrow-4 mr-2"></i>
                             View Records
                         </a> 
@@ -42,10 +42,10 @@
 
                     <!-- form -->
                     @include('cms.helpers.partials.feedback')
-                    <form id="products-create" 
+                    <form id="tasks-create" 
                             action="@if(isset($product->id))  
-                            {{ route('products.update', ['product' => $product->id]) }}
-                            @else {{ route('products.store' ) }} @endif"  
+                            {{ route('tasks.update', ['product' => $product->id]) }}
+                            @else {{ route('tasks.store' ) }} @endif"  
                             method="post" 
                             enctype="multipart/form-data">
 

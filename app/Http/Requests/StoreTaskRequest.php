@@ -3,9 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
-class UpdateProductRequest extends FormRequest
+class StoreTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class UpdateProductRequest extends FormRequest
     public function authorize(): bool
     {
         $user = auth()->user();
-        return $user->hasAnyRole(['admin', 'superadmin']) ||  $this->created_by == auth()->id();
+        return $user->hasAnyRole(['admin', 'superadmin']);
     }
 
     /**
@@ -25,12 +26,13 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'title' => 'required|min:2',
-            'slug' => [
-                'nullable',
-                Rule::unique('products')->ignore($this->product)
-            ]
+            'description' => 'required|min:5',
+            'category_id' => 'required',
+            'featuredimg' => 'required',
+            'slug' => 'unique:products,slug',
         ];
     }
+
 
     public function messages()
     {
@@ -38,5 +40,19 @@ class UpdateProductRequest extends FormRequest
             'unique' => ':attribute is already used',
             'required' => 'The :attribute field is required.',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'slug' => Str::slug($this->input('title')),
+        ]);
+    }
+
+    public function passedValidation()
+    {
+        $this->merge([
+            'created_by' => Auth::id()
+        ]);
     }
 }

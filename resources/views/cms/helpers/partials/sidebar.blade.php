@@ -69,17 +69,17 @@
 					</a>
 				</li>
 
-				<li class="nav-item @if(Route::is('productCategories.*')) active @endif">
-					<a href="{{ route('productCategories.index') }}">
+				<li class="nav-item @if(Route::is('taskCategories.*')) active @endif">
+					<a href="{{ route('taskCategories.index') }}">
 						<i class="far fa-clone"></i>
-						<p> ProductCategories</p>
+						<p> TaskCategories</p>
 					</a>
 				</li>
 
-				<li class="nav-item @if(Route::is('products.*')) active @endif">
-					<a href="{{ route('products.index') }}">
+				<li class="nav-item @if(Route::is('tasks.*')) active @endif">
+					<a href="{{ route('tasks.index') }}">
 						<i class="far fa-edit"></i>
-						<p> Products</p>
+						<p> Tasks</p>
 					</a>
 				</li>
 

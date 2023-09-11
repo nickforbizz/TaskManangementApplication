@@ -26,14 +26,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $updated_at
  * 
  * @property User $user
- * @property Collection|Product[] $products
+ * @property Collection|Task[] $tasks
  *
  * @package App\Models
  */
-class ProductCategory extends Model
+class TaskCategory extends Model
 {
 	use SoftDeletes, HasFactory;
-	protected $table = 'product_categories';
+	protected $table = 'task_categories';
 
 	protected $casts = [
 		'created_by' => 'int'
@@ -52,8 +52,8 @@ class ProductCategory extends Model
 		return $this->belongsTo(User::class, 'created_by');
 	}
 
-	public function products()
+	public function tasks()
 	{
-		return $this->hasMany(Product::class, 'category_id');
+		return $this->hasMany(Task::class, 'category_id');
 	}
 }

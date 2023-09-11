@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 
-class StoreProductCategoryRequest extends FormRequest
+class StoreTaskCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

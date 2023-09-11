@@ -3,7 +3,7 @@
 @section('content')
 <div class="page-inner">
     <div class="page-header">
-        <h4 class="page-title"> Products </h4>
+        <h4 class="page-title"> Tasks </h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
                 <a href="#">
@@ -14,7 +14,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Products</a>
+                <a href="#">tasks</a>
             </li>
             <li class="separator">
                 <i class="flaticon-right-arrow"></i>
@@ -32,8 +32,8 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">List of Available Record(s)</h4>
-                        @can('create products')
-                        <a href="{{ route('products.create') }}" class="btn btn-primary btn-round ml-auto" >
+                        @can('create tasks')
+                        <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round ml-auto" >
                             <i class="flaticon-add mr-2"></i>
                             Add Record
                         </a> 
@@ -44,7 +44,7 @@
 
                     <div class="table-responsive">
                         @include('cms.helpers.partials.feedback')
-                        <table id="tb_products" class="display table table-striped table-hover">
+                        <table id="tb_tasks" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -73,10 +73,10 @@
 
 <script>
     $(document).ready(function() {
-        $('#tb_products').DataTable({
+        $('#tb_tasks').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('products.index') }}",
+            ajax: "{{ route('tasks.index') }}",
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
@@ -104,7 +104,7 @@
                 },
             ]
         });
-        // #tb_products
+        // #tb_tasks
 
   
     });

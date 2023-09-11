@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\cms;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProductCategory;
-use App\Http\Requests\StoreProductCategoryRequest;
-use App\Http\Requests\UpdateProductCategoryRequest;
+use App\Models\TaskCategory;
+use App\Http\Requests\StoreTaskCategoryRequest;
+use App\Http\Requests\UpdateTaskCategoryRequest;
 
 use Illuminate\Http\Request;
 use DataTables;
 
-class ProductCategoryController extends Controller
+class TaskCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class ProductCategoryController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = ProductCategory::orderBy('created_at', 'desc')->get();
+        $data = TaskCategory::orderBy('created_at', 'desc')->get();
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -29,7 +29,7 @@ class ProductCategoryController extends Controller
                     $btn_edit = $btn_del = null;
                     if (auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) {
                         $btn_edit = '<a data-toggle="tooltip" 
-                                        href="' . route('productCategories.edit', $row->id) . '" 
+                                        href="' . route('taskCategories.edit', $row->id) . '" 
                                         class="btn btn-link btn-primary btn-lg" 
                                         data-original-title="Edit Record">
                                     <i class="fa fa-edit"></i>
@@ -41,7 +41,7 @@ class ProductCategoryController extends Controller
                                     data-toggle="tooltip" 
                                     title="" 
                                     class="btn btn-link btn-danger" 
-                                    onclick="delRecord(`' . $row->id . '`, `' . route('productCategories.destroy', $row->id) . '`, `#tb_productCategories`)"
+                                    onclick="delRecord(`' . $row->id . '`, `' . route('taskCategories.destroy', $row->id) . '`, `#tb_taskCategories`)"
                                     data-original-title="Remove">
                                 <i class="fa fa-times"></i>
                             </button>';
@@ -53,7 +53,7 @@ class ProductCategoryController extends Controller
         }
 
         // render view
-        return view('cms.productCategories.index');
+        return view('cms.taskCategories.index');
     }
 
     /**
@@ -61,54 +61,54 @@ class ProductCategoryController extends Controller
      */
     public function create()
     {
-        return view('cms.productCategories.create');
+        return view('cms.taskCategories.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductCategoryRequest $request)
+    public function store(StoreTaskCategoryRequest $request)
     {
-        ProductCategory::create($request->all());
+        TaskCategory::create($request->all());
         return redirect()->back()->with('success', 'Record Created Successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ProductCategory $productCategory)
+    public function show(TaskCategory $TaskCategory)
     {
         return response()
-            ->json($productCategory, 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
+            ->json($TaskCategory, 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProductCategory $productCategory)
+    public function edit(TaskCategory $TaskCategory)
     {
-        return view('cms.productCategories.create', compact('productCategory'));
+        return view('cms.taskCategories.create', compact('TaskCategory'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductCategoryRequest $request, ProductCategory $productCategory)
+    public function update(UpdateTaskCategoryRequest $request, TaskCategory $TaskCategory)
     {
-        $productCategory->update($request->all());
+        $TaskCategory->update($request->all());
 
         // Redirect the user to the user's profile page
         return redirect()
-            ->route('productCategories.index')
+            ->route('taskCategories.index')
             ->with('success', 'Record updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductCategory $productCategory)
+    public function destroy(TaskCategory $TaskCategory)
     {
-        if ($productCategory->delete()) {
+        if ($TaskCategory->delete()) {
             return response()->json([
                 'code' => 1,
                 'msg' => 'Record deleted successfully'

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Product
+ * Class task
  * 
  * @property int $id
  * @property string $title
@@ -32,15 +32,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property ProductCategory $product_category
+ * @property TaskCategory $task_category
  * @property User $user
  *
  * @package App\Models
  */
-class Product extends Model
+class Task extends Model
 {
 	use SoftDeletes, HasFactory;
-	protected $table = 'products';
+	protected $table = 'tasks';
 
 	protected $casts = [
 		'created_by' => 'int',
@@ -63,9 +63,9 @@ class Product extends Model
 		'status'
 	];
 
-	public function product_category()
+	public function task_category()
 	{
-		return $this->belongsTo(ProductCategory::class, 'category_id');
+		return $this->belongsTo(TaskCategory::class, 'category_id');
 	}
 
 	public function user()
