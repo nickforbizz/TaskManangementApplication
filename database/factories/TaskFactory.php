@@ -27,6 +27,8 @@ class TaskFactory extends Factory
             'title' => $title,
             'slug' => Str::slug($title),
             'description' => $this->faker->paragraph,
+            'priority' => $this->faker->randomElement([1,2,3]),
+            'assigned_to' => $this->faker->randomElement($users),
             'created_by' => $this->faker->randomElement($users),
             'category_id' => $this->faker->randomElement($categories),
         ];
