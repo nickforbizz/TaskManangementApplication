@@ -12,18 +12,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class task
+ * Class Task
  * 
  * @property int $id
  * @property string $title
  * @property string $slug
  * @property string $description
- * @property string $price
- * @property string $quantity
- * @property string $color
- * @property string $size
- * @property string $label
- * @property string $photo
+ * @property string $priority
+ * @property Carbon $due_date
+ * @property Carbon $completion_date
+ * @property int $assigned_to
  * @property int $created_by
  * @property int $category_id
  * @property string $active
@@ -32,8 +30,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property TaskCategory $task_category
  * @property User $user
+ * @property TaskCategory $task_category
  *
  * @package App\Models
  */
@@ -43,33 +41,34 @@ class Task extends Model
 	protected $table = 'tasks';
 
 	protected $casts = [
+		'due_date' => 'date',
+		'completion_date' => 'date',
+		'assigned_to' => 'int',
 		'created_by' => 'int',
-		'category_id' => 'int'
+		'category_id' => 'int',
 	];
 
 	protected $fillable = [
 		'title',
 		'slug',
 		'description',
-		'price',
-		'quantity',
-		'color',
-		'size',
-		'label',
-		'photo',
+		'priority',
+		'due_date',
+		'completion_date',
+		'assigned_to',
 		'created_by',
 		'category_id',
 		'active',
 		'status'
 	];
 
-	public function task_category()
-	{
-		return $this->belongsTo(TaskCategory::class, 'category_id');
-	}
-
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'created_by');
+	}
+
+	public function task_category()
+	{
+		return $this->belongsTo(TaskCategory::class, 'category_id');
 	}
 }
