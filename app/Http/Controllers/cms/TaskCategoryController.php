@@ -10,7 +10,7 @@ use App\Http\Requests\UpdateTaskCategoryRequest;
 use Illuminate\Http\Request;
 use DataTables;
 
-class TaskCategoryController extends Controller
+class TaskCategoryController extends Controller 
 {
     /**
      * Display a listing of the resource.
