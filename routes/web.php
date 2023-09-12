@@ -7,11 +7,11 @@ use App\Http\Controllers\cms\PermissionController;
 use App\Http\Controllers\cms\UserController;
 use App\Http\Controllers\cms\PostCategoryController;
 use App\Http\Controllers\cms\PostController;
-use App\Http\Controllers\cms\ProductCategoryController;
-use App\Http\Controllers\cms\ProductController;
 use App\Http\Controllers\cms\ReportController;
 use App\Http\Controllers\cms\RoleController;
 use App\Http\Controllers\cms\SearchController;
+use App\Http\Controllers\cms\TaskCategoryController;
+use App\Http\Controllers\cms\TaskController;
 use App\Http\Controllers\frontend\ViewsController;
 use App\Http\Controllers\HomeController;
 use App\Models\User;
@@ -91,7 +91,7 @@ Route::middleware('cms')->group(function () {
         'users' => UserController::class,
         'posts' => PostController::class,
         'postCategories' => PostCategoryController::class,
-        'tasks' => TasksController::class,
+        'tasks' => TaskController::class,
         'taskCategories' => TaskCategoryController::class,
         'roles' => RoleController::class,
         'permissions' => PermissionController::class,

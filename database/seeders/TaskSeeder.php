@@ -5,17 +5,17 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\ProductCategory;
-use App\Models\Product;
+use App\Models\Task;
+use App\Models\TaskCategory;
 
-class ProductSeeder extends Seeder
+class TaskSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        ProductCategory::factory()->count(4)->create();
-        Product::factory()->count(19)->create();
+        TaskCategory::factory()->count(4)->create();
+        Task::factory()->count(19)->create();
     }
 }
