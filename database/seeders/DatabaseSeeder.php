@@ -19,8 +19,9 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-
+        
         $this->call(RoleSeeder::class);
+        $this->call(PermissionTableSeeder::class);
         $this->call(AdminSeeder::class);
         $this->call(PostSeeder::class);
         $this->call(TaskSeeder::class);
