@@ -35,6 +35,6 @@ enum TaskStatus: int  {
             self::COMPLETED => "Completed",
             self::REVISION => "Revision",
             self::ARCHIVED => "Archived",
-        }
+        };
     }
 }

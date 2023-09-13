@@ -48,11 +48,12 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Img</th>
                                     <th>Category</th>
                                     <th>Title</th>
-                                    <th>Content</th>
-                                    <th>Created At</th>
+                                    <th>Due Date</th>
+                                    <th>Completed Date</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
                                     <th style="width: 10%">Action</th>
                                 </tr>
                             </thead>
@@ -82,20 +83,23 @@
                     name: 'DT_RowIndex'
                 },
                 {
-                    data: 'photo'
-                },
-                {
                     data: 'category_id'
                 },
                 {
                     data: 'title'
-                },
-                {
-                    data: 'description'
                 },					
                 {
-                    data: 'created_at',
-                },
+                    data: 'due_date',
+                },						
+                {
+                    data: 'completion_date',
+                },							
+                {
+                    data: 'priority',
+                },								
+                {
+                    data: 'status',
+                },	
                 {
                     data: 'action',
                     name: 'action',

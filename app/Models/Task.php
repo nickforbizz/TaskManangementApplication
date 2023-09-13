@@ -6,6 +6,8 @@
 
 namespace App\Models;
 
+use App\Enums\TaskPriority;
+use App\Enums\TaskStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,15 +41,6 @@ class Task extends Model
 {
 	use SoftDeletes, HasFactory;
 	protected $table = 'tasks';
-
-	protected $casts = [
-		'due_date' => 'date',
-		'completion_date' => 'date',
-		'assigned_to' => 'int',
-		'created_by' => 'int',
-		'category_id' => 'int',
-	];
-
 	protected $fillable = [
 		'title',
 		'slug',
@@ -61,6 +54,17 @@ class Task extends Model
 		'active',
 		'status'
 	];
+
+	protected $casts = [
+		'due_date' => 'date',
+		'completion_date' => 'date',
+		'assigned_to' => 'int',
+		'created_by' => 'int',
+		'category_id' => 'int',
+		'status' => TaskStatus::class,
+		'priority' => TaskPriority::class,
+	];
+
 
 	public function user()
 	{
