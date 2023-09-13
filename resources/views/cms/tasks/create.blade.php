@@ -65,15 +65,7 @@
                             @enderror
                         </div>
 
-                        <div class="form-group">
-                            <label for="slug"> Slug</label>
-                            <input id="slug" type="text" class="form-control form-control" 
-                               
-                                disabled
-                                value="{{ old('slug', $task->slug ?? '') }}"  />
-                            @error('slug') <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        
 
                         <div class="form-group">
                             <label for="category_id">Category</label>
