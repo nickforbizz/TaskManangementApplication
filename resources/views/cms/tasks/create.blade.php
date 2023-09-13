@@ -43,14 +43,14 @@
                     <!-- form -->
                     @include('cms.helpers.partials.feedback')
                     <form id="tasks-create" 
-                            action="@if(isset($product->id))  
-                            {{ route('tasks.update', ['product' => $product->id]) }}
+                            action="@if(isset($task->id))  
+                            {{ route('tasks.update', ['task' => $task->id]) }}
                             @else {{ route('tasks.store' ) }} @endif"  
                             method="post" 
                             enctype="multipart/form-data">
 
                         @csrf
-                        @if(isset($product->id))
+                        @if(isset($task->id))
                             @method('PUT')
                             <input type="hidden" name="created_by" value="{{ auth()->id() }}">
                         @endif
@@ -60,7 +60,7 @@
                             <input id="title" type="text" class="form-control form-control" 
                                 name="title" 
                                 placeholder="Enter title ..." 
-                                value="{{ old('title', $product->title ?? '')  }}"  />
+                                value="{{ old('title', $task->title ?? '')  }}"  />
                             @error('title') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -70,16 +70,16 @@
                             <input id="slug" type="text" class="form-control form-control" 
                                
                                 disabled
-                                value="{{ old('slug', $product->slug ?? '') }}"  />
+                                value="{{ old('slug', $task->slug ?? '') }}"  />
                             @error('slug') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group">
                             <label for="category_id">Category</label>
-                            <select name="category_id" id="product_category" class="form-control form-control">
-                                @forelse($product_categories as $category)
-                                    <option value="{{ $category->id }}" @if(isset($product->id)) {{  $category->id == $product->category_id ? 'selected' : '' }} @endif> {{ $category->name }} </option>
+                            <select name="category_id" id="task_category" class="form-control form-control">
+                                @forelse($task_categories as $category)
+                                    <option value="{{ $category->id }}" @if(isset($task->id)) {{  $category->id == $task->category_id ? 'selected' : '' }} @endif> {{ $category->name }} </option>
                                 @empty
                                     <option selected disabled> -- No item -- </option> 
                                 @endforelse
@@ -90,7 +90,7 @@
 
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control form-control tiny_textarea" placeholder="Enter description ...">{{ old('description', $product->description ?? '') }}</textarea>
+                            <textarea name="description" id="description" class="form-control form-control tiny_textarea" placeholder="Enter description ...">{{ old('description', $task->description ?? '') }}</textarea>
                             @error('description') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -98,8 +98,8 @@
                         <div class="form-group form-floating-label">
                             <label for="featuredimg" class=""> Photo </label>
                             <input id="featuredimg" type="file" class="form-control input-border-bottom" name="featuredimg" />
-                            @if (isset($product->photo))
-                                <img id="blah" src="{{ asset('storage/'.$product->photo) }}" alt="current image" height="100px"/>
+                            @if (isset($task->photo))
+                                <img id="blah" src="{{ asset('storage/'.$task->photo) }}" alt="current image" height="100px"/>
                             @else
                                 <img id="blah" src="#" alt="no image" height="100px"/>
                             @endif

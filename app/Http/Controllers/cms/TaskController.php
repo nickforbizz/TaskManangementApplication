@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\cms;
 
+use App\Enums\TaskPriority;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -26,11 +27,11 @@ class TaskController extends Controller
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('created_at', function ($row) {
-                    return date_format($row->created_at, 'Y/m/d H:i');
+                ->editColumn('completion_date', function ($row) {
+                    return date_format($row->completion_date, 'Y/m/d H:i');
                 })
-                ->editColumn('photo', function ($row) {
-                    return '<img class="tb_img" src="' . url('storage/' . $row->photo) . '" alt="' . $row->slug . '" data-toggle="popover" data-placement="top" data-content="<img src=' . url('storage/' . $row->photo) . ' style=\'max-height: 200px; max-width: 200px;\'>">';
+                ->editColumn('due_date', function ($row) {
+                    return date_format($row->due_date, 'Y/m/d H:i');
                 })
                 ->editColumn('category_id', function ($row) {
                     return $row->Task_category->name;
@@ -38,11 +39,21 @@ class TaskController extends Controller
                 ->editColumn('title', function ($row) {
                     return Str::limit($row->title, 10, '...');
                 })
-                ->editColumn('description', function ($row) {
-                    return Str::limit($row->description, 20, '...');
+                ->editColumn('priority', function ($row) {
+                    return $row->priority->getLabelText();
+                })
+                ->editColumn('status', function ($row) {
+                    return $row->status->getLabelText();
                 })
                 ->addColumn('action', function ($row) {
-                    $btn_edit = $btn_del = null;
+                    $btn_edit = $btn_del = $btn_view = null;
+                    $btn_view = '<a data-toggle="tooltip" 
+                            href="' . route('tasks.show', $row->id) . '" 
+                            class="btn btn-link btn-info btn-lg" 
+                            data-original-title="View Record">
+                        <i class="fa fa-eye"></i>
+                    </a>';
+
                     if (auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) {
                         $btn_edit = '<a data-toggle="tooltip" 
                                     href="' . route('tasks.edit', $row->id) . '" 
@@ -56,15 +67,15 @@ class TaskController extends Controller
                         $btn_del = '<button type="button" 
                                     data-toggle="tooltip" 
                                     title="" 
-                                    class="btn btn-link btn-danger" 
+                                    class="btn btn-link btn-danger btn-lg" 
                                     onclick="delRecord(`' . $row->id . '`, `' . route('tasks.destroy', $row->id) . '`, `#tb_Tasks`)"
                                     data-original-title="Remove">
                                 <i class="fa fa-times"></i>
                             </button>';
                     }
-                    return $btn_edit . $btn_del;
+                    return $btn_view . $btn_edit . $btn_del;
                 })
-                ->rawColumns(['photo', 'category_id', 'title', 'description', 'action'])
+                ->rawColumns(['category_id', 'title', 'priority', 'action'])
                 ->make(true);
         }
 
@@ -111,9 +122,9 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Task $Task)
+    public function edit(Task $task)
     {
-        $Task_categories = TaskCategory::where('active', 1)->get();
+        $task_categories = TaskCategory::where('active', 1)->get();
         return view('cms.tasks.create', compact('task', 'task_categories'));
     }
 
@@ -173,7 +184,4 @@ class TaskController extends Controller
 
         return  $request;
     }
-
-
-
 }
