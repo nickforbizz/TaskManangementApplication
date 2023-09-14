@@ -14,6 +14,7 @@ use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\TaskCategory;
+use App\Models\User;
 
 class TaskController extends Controller
 {
@@ -89,7 +90,8 @@ class TaskController extends Controller
     public function create()
     {
         $task_categories = TaskCategory::where('active', 1)->get();
-        return view('cms.tasks.create', compact('task_categories'));
+        $users = User::where('active', 1)->get();
+        return view('cms.tasks.create', compact('task_categories', 'users'));
     }
 
     /**
@@ -125,7 +127,8 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         $task_categories = TaskCategory::where('active', 1)->get();
-        return view('cms.tasks.create', compact('task', 'task_categories'));
+        $users = User::where('active', 1)->get();
+        return view('cms.tasks.create', compact('task', 'task_categories', 'users'));
     }
 
     /**
