@@ -71,7 +71,7 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="category_id">Category</label>
-                                <select name="category_id" id="task_category" class="form-control">
+                                <select name="category_id" id="task_category" class="form-control select2">
                                     @forelse($task_categories as $category)
                                         <option value="{{ $category->id }}" @if(isset($task->id)) {{  $category->id == $task->category_id ? 'selected' : '' }} @endif> {{ $category->name }} </option>
                                     @empty
@@ -83,10 +83,10 @@
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label for="priority"> Task Priority {{$task->priority}}</label>
+                                <label for="priority"> Task Priority</label>
                                 <select name="priority" id="task_priority" class="form-control">
                                     @forelse(\App\Enums\TaskPriority::values() as $key=>$value) 
-                                        <option value="{{ $key }}" @if(isset($task->priority)) {{  $task->priority == $key ? 'selected' : '' }} @endif> {{ $value }} </option>
+                                        <option value="{{ $key }}" @if(isset($task->priority)) {{  $task->priority->getLabelVal() == $key ? 'selected' : '' }} @endif>  {{ $value }}</option>
                                     @empty
                                         <option selected disabled> -- No item -- </option> 
                                     @endforelse
@@ -108,7 +108,7 @@
                             </div>
                             <div class="col-lg-6 form-group">
                                 <label for="assigned_to"> Assign To</label>
-                                <select name="assigned_to" id="assigned_to" class="form-control">
+                                <select name="assigned_to" id="assigned_to" class="form-control select2">
                                     @forelse($users as $user)
                                         <option value="{{ $user->id }}" @if(isset($task->assigned_to)) {{  $user->id == $task->assigned_to ? 'selected' : '' }} @endif> {{ $user->email }} </option>
                                     @empty
@@ -120,8 +120,35 @@
                             </div>
                         </div>
 
+                        @if(isset($task->created_by))
                         <div class="row">
-                            <div class="form-group">
+                            <div class="col-lg-6 form-group">
+                                <label for="active"> Active</label>
+                                <select name="active" id="active" class="form-control">
+                                    <option value="1" @if(isset($task->active)) {{  1 == $task->active ? 'selected' : '' }} @endif> Yes </option>
+                                    <option value="0" @if(isset($task->active)) {{  0 == $task->active ? 'selected' : '' }} @endif> No </option>
+                                </select>
+                                @error('active') <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                <label for="status"> Task Status</label>
+                                <select name="status" id="task_status" class="form-control">
+                                    @forelse(\App\Enums\TaskStatus::values() as $key=>$value) 
+                                        <option value="{{ $key }}" @if(isset($task->status)) {{  $task->status->getLabelVal() == $key ? 'selected' : '' }} @endif>  {{ $value }}</option>
+                                    @empty
+                                        <option selected disabled> -- No item -- </option> 
+                                    @endforelse
+                                </select>
+                                @error('status') <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        @endif
+
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
                                 <label for="description">Description</label>
                                 <textarea name="description" id="description" class="form-control tiny_textarea" placeholder="Enter description ...">{{ old('description', $task->description ?? '') }}</textarea>
                                 @error('description') <span class="text-danger">{{ $message }}</span>
@@ -150,7 +177,7 @@
 
                         <div class="card">
                             <div class="form-group form-floating-label">
-                                <button class="btn btn-success btn-round float-right">Submit</button>
+                                <button type="submit" class="btn btn-success btn-round float-right">Submit</button>
                             </div>
                         </div>
                     </form>

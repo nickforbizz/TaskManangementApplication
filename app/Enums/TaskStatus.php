@@ -38,6 +38,16 @@ enum TaskStatus: int  {
         };
     }
 
+    public function getLabelVal(): string {
+        return match ($this) {
+            self::TODO => 1,
+            self::IN_PROGRESS => 2,
+            self::COMPLETED => 3,
+            self::REVISION => 4,
+            self::ARCHIVED => 5,
+        };
+    }
+
     public static function values(): array
     {
         return array_column(self::cases(), 'name', 'value');

@@ -99,8 +99,9 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        $request = $this->storeFeaturedImg($request);
-        $task = Task::create($request->all());
+        // $request = $this->storeAttachmentFiles($request);
+        dd($request->validated());
+        $task = Task::create($request->validated());
 
         if ($task) {
             return redirect()
@@ -136,7 +137,7 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        $request = $this->storeFeaturedImg($request);
+        $request = $this->storeAttachmentFiles($request);
         $task->update($request->all());
 
         // Redirect the Task to the Task's profile page
@@ -169,7 +170,7 @@ class TaskController extends Controller
     }
 
 
-    private function storeFeaturedImg(Request $request, Task $Task = null)
+    private function storeAttachmentFiles(Request $request, Task $Task = null)
     {
 
 
