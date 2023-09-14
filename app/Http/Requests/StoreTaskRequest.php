@@ -28,8 +28,13 @@ class StoreTaskRequest extends FormRequest
             'title' => 'required|min:2',
             'description' => 'required|min:5',
             'category_id' => 'required',
-            'featuredimg' => 'required',
-            'slug' => 'unique:products,slug',
+            'due_date' => 'required',
+            'completion_date' => 'required',
+            'assigned_to' => 'required:users',
+            'assigned_to' => 'required:users',
+            'priority' => 'required',
+            // 'featuredimg' => 'required',
+            'slug' => 'unique:tasks,slug',
         ];
     }
 
