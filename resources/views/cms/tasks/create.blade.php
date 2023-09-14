@@ -55,48 +55,92 @@
                             <input type="hidden" name="created_by" value="{{ auth()->id() }}">
                         @endif
 
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input id="title" type="text" class="form-control form-control" 
-                                name="title" 
-                                placeholder="Enter title ..." 
-                                value="{{ old('title', $task->title ?? '')  }}"  />
-                            @error('title') <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <label for="title">Title</label>
+                                <input id="title" type="text" class="form-control" 
+                                    name="title" 
+                                    placeholder="Enter title ..." 
+                                    value="{{ old('title', $task->title ?? '')  }}"  />
+                                @error('title') <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
 
                         
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="category_id">Category</label>
+                                <select name="category_id" id="task_category" class="form-control">
+                                    @forelse($task_categories as $category)
+                                        <option value="{{ $category->id }}" @if(isset($task->id)) {{  $category->id == $task->category_id ? 'selected' : '' }} @endif> {{ $category->name }} </option>
+                                    @empty
+                                        <option selected disabled> -- No item -- </option> 
+                                    @endforelse
+                                </select>
+                                @error('category_id') <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
 
-                        <div class="form-group">
-                            <label for="category_id">Category</label>
-                            <select name="category_id" id="task_category" class="form-control form-control">
-                                @forelse($task_categories as $category)
-                                    <option value="{{ $category->id }}" @if(isset($task->id)) {{  $category->id == $task->category_id ? 'selected' : '' }} @endif> {{ $category->name }} </option>
-                                @empty
-                                    <option selected disabled> -- No item -- </option> 
-                                @endforelse
-                            </select>
-                            @error('category_id') <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                            <div class="col-md-6 form-group">
+                                <label for="priority"> Task Priority {{$task->priority}}</label>
+                                <select name="priority" id="task_priority" class="form-control">
+                                    @forelse(\App\Enums\TaskPriority::values() as $key=>$value) 
+                                        <option value="{{ $key }}" @if(isset($task->priority)) {{  $task->priority == $key ? 'selected' : '' }} @endif> {{ $value }} </option>
+                                    @empty
+                                        <option selected disabled> -- No item -- </option> 
+                                    @endforelse
+                                </select>
+                                @error('priority') <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-6 form-group">
+                                <label for="due_date">Due Date</label>
+                                <input id="due_date" type="datetime-local" class="form-control" 
+                                    name="due_date" 
+                                    placeholder="Enter due_date ..." 
+                                    value="{{ old('due_date', $task->due_date ?? '')  }}"  />
+                                @error('due_date') <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label for="assigned_to"> Assign To</label>
+                                <select name="assigned_to" id="assigned_to" class="form-control">
+                                    @forelse($users as $user)
+                                        <option value="{{ $user->id }}" @if(isset($task->assigned_to)) {{  $user->id == $task->assigned_to ? 'selected' : '' }} @endif> {{ $user->email }} </option>
+                                    @empty
+                                        <option selected disabled> -- No item -- </option> 
+                                    @endforelse
+                                </select>
+                                @error('assigned_to') <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control form-control tiny_textarea" placeholder="Enter description ...">{{ old('description', $task->description ?? '') }}</textarea>
-                            @error('description') <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea name="description" id="description" class="form-control tiny_textarea" placeholder="Enter description ...">{{ old('description', $task->description ?? '') }}</textarea>
+                                @error('description') <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
 
-                        <div class="form-group form-floating-label">
-                            <label for="featuredimg" class=""> Photo </label>
-                            <input id="featuredimg" type="file" class="form-control input-border-bottom" name="featuredimg" />
-                            @if (isset($task->photo))
-                                <img id="blah" src="{{ asset('storage/'.$task->photo) }}" alt="current image" height="100px"/>
-                            @else
-                                <img id="blah" src="#" alt="no image" height="100px"/>
-                            @endif
-                            @error('photo') <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                        <div class="row">
+                            <div class="form-group form-floating-label">
+                                <label for="featuredimg" class=""> Attachments </label>
+                                <input id="featuredimg" type="file" class="form-control input-border-bottom" name="featuredimg" />
+                                @if (isset($task->photo))
+                                    <img id="blah" src="{{ asset('storage/'.$task->photo) }}" alt="current image" height="100px"/>
+                                @else
+                                    <img id="blah" src="#" alt="no image" height="100px"/>
+                                @endif
+                                @error('photo') <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
 
                     </div>  
