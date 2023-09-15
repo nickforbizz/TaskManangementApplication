@@ -25,9 +25,17 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'title' => 'required|min:2',
+            'description' => 'required|min:5',
+            'category_id' => 'required',
+            'due_date' => 'required',
+            'completion_date' => 'required',
+            'assigned_to' => 'required:users',
+            'assigned_to' => 'required:users',
+            'priority' => 'required',
+            // 'featuredimg' => 'required',
             'slug' => [
                 'nullable',
-                Rule::unique('products')->ignore($this->product)
+                Rule::unique('tasks')->ignore($this->task)
             ]
         ];
     }
