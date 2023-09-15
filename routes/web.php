@@ -95,7 +95,7 @@ Route::middleware('cms')->group(function () {
         'taskCategories' => TaskCategoryController::class,
         'roles' => RoleController::class,
         'permissions' => PermissionController::class,
-        'assignRoles' => AssignRoleController::class,
+        // 'assignRoles' => AssignRoleController::class,
         'reports' => ReportController::class,
         'notifications' => NotificationController::class,
     ]);

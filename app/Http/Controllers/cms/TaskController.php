@@ -137,7 +137,8 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        $request = $this->storeAttachmentFiles($request);
+        // $request = $this->storeAttachmentFiles($request);
+        dd($request->validated());
         $task->update($request->all());
 
         // Redirect the Task to the Task's profile page

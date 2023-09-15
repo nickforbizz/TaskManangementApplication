@@ -46,7 +46,7 @@
                             action="@if(isset($task->id))  
                             {{ route('tasks.update', ['task' => $task->id]) }}
                             @else {{ route('tasks.store' ) }} @endif"  
-                            method="post" 
+                            method="POST" 
                             enctype="multipart/form-data">
 
                         @csrf
