@@ -24,7 +24,7 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = Task::orderBy('created_at', 'desc')->get();
+        $data = Task::orderBy('created_at', 'desc')->with('task_category')->get();
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -35,7 +35,7 @@ class TaskController extends Controller
                     return date_format($row->due_date, 'Y/m/d H:i');
                 })
                 ->editColumn('category_id', function ($row) {
-                    return $row->Task_category->name;
+                    return $row->task_category->name;
                 })
                 ->editColumn('title', function ($row) {
                     return Str::limit($row->title, 10, '...');
