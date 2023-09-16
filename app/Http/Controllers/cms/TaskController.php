@@ -117,9 +117,9 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Task $Task)
+    public function show(Task $task)
     {
-        return $Task;
+        return view('cms.tasks.view', compact('task'));
     }
 
     /**
