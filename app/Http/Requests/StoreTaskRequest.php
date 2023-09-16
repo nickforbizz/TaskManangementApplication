@@ -29,12 +29,11 @@ class StoreTaskRequest extends FormRequest
             'description' => 'required|min:5',
             'category_id' => 'required',
             'due_date' => 'required',
-            'completion_date' => 'required',
-            'assigned_to' => 'required:users',
             'assigned_to' => 'required:users',
             'priority' => 'required',
             // 'featuredimg' => 'required',
             'slug' => 'unique:tasks,slug',
+            'created_by' => 'required:users',
         ];
     }
 
@@ -51,6 +50,7 @@ class StoreTaskRequest extends FormRequest
     {
         $this->merge([
             'slug' => Str::slug($this->input('title')),
+            'created_by' => Auth::id(),
         ]);
     }
 

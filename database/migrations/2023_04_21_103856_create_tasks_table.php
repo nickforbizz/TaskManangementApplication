@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('task_categories')->onDelete('cascade');
-            $table->string('active')->default(0);
+            $table->boolean('active')->default(1);
             $table->string('status')->default(1)->comment('1.)Todo 2.)In Progress 3.) Completed 4.) Revision 5.) Archived ');
             $table->softDeletes();
             $table->timestamps();

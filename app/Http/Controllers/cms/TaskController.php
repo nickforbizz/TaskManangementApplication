@@ -100,7 +100,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         // $request = $this->storeAttachmentFiles($request);
-        dd($request->validated());
+        
         $task = Task::create($request->validated());
 
         if ($task) {
@@ -138,8 +138,8 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         // $request = $this->storeAttachmentFiles($request);
-        dd($request->validated());
-        $task->update($request->all());
+        // dd($request->validated());
+        $task->update($request->validated());
 
         // Redirect the Task to the Task's profile page
         return redirect()

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('avator')->default('default_avator.png');
-            $table->string('active')->default(0);
+            $table->boolean('active')->default(0);
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

@@ -122,7 +122,17 @@
 
                         @if(isset($task->created_by))
                         <div class="row">
-                            <div class="col-lg-6 form-group">
+                            <div class="col-md-4 form-group">
+                                <label for="completion_date">Completed Date</label>
+                                <input id="completion_date" type="datetime-local" class="form-control" 
+                                    name="completion_date" 
+                                    placeholder="Enter completion_date ..." 
+                                    value="{{ old('completion_date', $task->completion_date ?? '')  }}"  />
+                                @error('completion_date') <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4 form-group">
                                 <label for="active"> Active</label>
                                 <select name="active" id="active" class="form-control">
                                     <option value="1" @if(isset($task->active)) {{  1 == $task->active ? 'selected' : '' }} @endif> Yes </option>
@@ -132,7 +142,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-4 form-group">
                                 <label for="status"> Task Status</label>
                                 <select name="status" id="task_status" class="form-control">
                                     @forelse(\App\Enums\TaskStatus::values() as $key=>$value) 
