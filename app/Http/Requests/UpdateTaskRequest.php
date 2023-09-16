@@ -3,7 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -28,15 +30,17 @@ class UpdateTaskRequest extends FormRequest
             'description' => 'required|min:5',
             'category_id' => 'required',
             'due_date' => 'required',
-            'completion_date' => 'required',
-            'assigned_to' => 'required:users',
             'assigned_to' => 'required:users',
             'priority' => 'required',
-            // 'featuredimg' => 'required',
             'slug' => [
                 'nullable',
                 Rule::unique('tasks')->ignore($this->task)
-            ]
+            ],
+            'created_by' => 'required:users',
+            'completion_date' => 'required',
+            'active' => 'required',
+            'status' => 'required',
+            // 'featuredimg' => 'required',
         ];
     }
 
@@ -46,5 +50,20 @@ class UpdateTaskRequest extends FormRequest
             'unique' => ':attribute is already used',
             'required' => 'The :attribute field is required.',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'slug' => Str::slug($this->input('title')),
+            'created_by' => Auth::id(),
+        ]);
+    }
+
+    public function passedValidation()
+    {
+        $this->merge([
+            'created_by' => Auth::id()
+        ]);
     }
 }
