@@ -14,7 +14,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#">tasks</a>
+                <a href="{{ route('tasks.index') }}" class="text-primary">tasks</a>
             </li>
             <li class="separator">
                 <i class="flaticon-right-arrow"></i>
@@ -32,10 +32,11 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Displaying Task Details</h4>
-                        @can('create tasks')
-                        <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round ml-auto" >
-                            <i class="flaticon-add mr-2"></i>
-                            Add Record
+                         
+                        @can('edit tasks')
+                        <a href="{{ route('tasks.edit', $task->id)  }}" class="btn btn-primary btn-round ml-auto" >
+                            <i class="flaticon-pencil mr-2"></i>
+                            Edit Record
                         </a> 
                         @endcan
                     </div>
