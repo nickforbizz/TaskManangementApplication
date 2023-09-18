@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\cms;
 
 use App\Enums\TaskPriority;
+use App\Events\TaskCreated;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -104,6 +105,8 @@ class TaskController extends Controller
         $task = Task::create($request->validated());
 
         if ($task) {
+            // Dispatch the event
+            event(new TaskCreated($task));
             return redirect()
                 ->route('tasks.index')
                 ->with('success', 'Record Created Successfully');
