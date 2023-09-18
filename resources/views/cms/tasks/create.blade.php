@@ -14,7 +14,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#">tasks</a>
+                <a href="{{ route('tasks.index') }}">tasks</a>
             </li>
             <li class="separator">
                 <i class="flaticon-right-arrow"></i>
