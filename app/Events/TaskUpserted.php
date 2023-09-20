@@ -11,18 +11,29 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TaskCreated
+class TaskUpserted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $task;
+    public $new_task;
+    public $updated_assignee;
+    public $updated_priority;
 
     /**
-     * Create a new event instance.
+     * Create event instance for TaskUpserted
+     *
+     * @param  Task   $task
+     * @param  [bool] $new_task
+     * @param  [type] $updated_assignee
+     * @param  [type] $updated_priority
      */
-    public function __construct(Task $task)
+    public function __construct(Task $task, $new_task, $updated_assignee, $updated_priority)
     {
         $this->task = $task;
+        $this->new_task = $new_task;
+        $this->updated_assignee = $updated_assignee;
+        $this->updated_priority = $updated_priority;
     }
 
     /**

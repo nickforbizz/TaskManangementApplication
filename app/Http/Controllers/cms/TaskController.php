@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\cms;
 
-use App\Enums\TaskPriority;
-use App\Events\TaskCreated;
+use App\Events\TaskUpserted;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -106,7 +105,7 @@ class TaskController extends Controller
 
         if ($task) {
             // Dispatch the event
-            event(new TaskCreated($task));
+            event(new TaskUpserted($task, $new_task=true, $updated_assignee=false, $updated_priority=false));
             return redirect()
                 ->route('tasks.index')
                 ->with('success', 'Record Created Successfully');
@@ -141,8 +140,18 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         // $request = $this->storeAttachmentFiles($request);
-        // dd($request->validated());
+        $old_task = Task::find($task->id);
         $task->update($request->validated());
+        
+        // Dispatch the event for task reassignment
+        if ((int)$old_task->assigned_to != (int)$task->assigned_to) {
+            event(new TaskUpserted($task, $new_task=false, $updated_assignee=true, $updated_priority=false));
+        }
+        
+        // Dispatch the event for task priority change
+        if ((int) $old_task->priority->getLabelVal() != (int) $task->priority->getLabelVal()) {
+            event(new TaskUpserted($task, $new_task=false, $updated_assignee=false, $updated_priority=true));
+        }
 
         // Redirect the Task to the Task's profile page
         return redirect()
