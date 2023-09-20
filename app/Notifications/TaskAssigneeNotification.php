@@ -8,20 +8,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewTaskNotification extends Notification
+class TaskAssigneeNotification extends Notification
 {
     use Queueable;
 
     public $task;
-    public $msg;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(Task $task, $msg = "new task has been created")
+    public function __construct(Task $task)
     {
         $this->task = $task;
-        $this->msg = $msg;
     }
 
     /**
@@ -55,7 +53,7 @@ class NewTaskNotification extends Notification
         return [
             'title' => $this->task->title,
             'assignee' => $this->task->assignee->email,
-            'message' => $this->msg,
+            'message' => "Task number {$this->task->id} has been reassigned to {$this->task->assignee->email}",
         ];
     }
 }
