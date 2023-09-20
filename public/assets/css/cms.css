@@ -1,9 +1,57 @@
-.tb_img{
-    height: 3rem;
-    border-radius: 15%;
+:root {
+    --main-bg-color: #ecb62c;
+    --secondary-bg-color: #f59621;
+    --light-color: #fff;
 }
 
 
+/*  *************************************************************************
+    ********************** THEME COLORS SETUP *******************************
+    ************************************************************************ */
+
+
 .logo{
-    color: white !important;
+    color: var(--light-color) !important;
+}
+
+.bg-primary{
+    background-color: var(--main-bg-color) !important;
+}
+
+.color-primary{
+    color: var(--main-bg-color) !important;
+}
+
+.btn-primary{
+    background-color: var(--main-bg-color) !important;
+    border-color: var(--main-bg-color) !important;
+}
+
+.navbar-header[data-background-color=blue2] {
+    background: var(--main-bg-color) !important;
+}
+.logo-header[data-background-color=blue] {
+    background: var(--main-bg-color) !important;
+}
+
+.sidebar.sidebar-style-2 .nav.nav-primary>.nav-item.active>a {
+    background: var(--main-bg-color) !important;
+}
+
+.bg-primary-gradient {
+    background: var(--main-bg-color) !important;
+    background: -webkit-linear-gradient(legacy-direction(-45deg),var(--secondary-bg-color),var(--main-bg-color))!important;
+    background: linear-gradient(-45deg,var(--secondary-bg-color),var(--main-bg-color))!important;
+}
+
+
+
+/*  *************************************************************************
+    ********************** END OF THEME COLORS SETUP ************************
+    ************************************************************************ */
+
+
+.tb_img{
+    height: 3rem;
+    border-radius: 15%;
 }

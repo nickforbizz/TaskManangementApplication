@@ -32,7 +32,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Add Record</h4>
-                        <a href="{{ route('tasks.index') }}" class="btn btn-primary btn-round ml-auto" >
+                        <a href="{{ route('tasks.index') }}" class="btn btn-primary btn-round ml-auto bg-primary" >
                             <i class="flaticon-left-arrow-4 mr-2"></i>
                             View Records
                         </a> 

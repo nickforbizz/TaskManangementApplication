@@ -34,7 +34,7 @@ class PermissionController extends Controller
                 if (auth()->user()->hasRole('superadmin')) {
                     $btn_edit = '<a data-toggle="tooltip" 
                                     href="' . route('permissions.edit', $row->id) . '" 
-                                    class="btn btn-link btn-primary btn-lg" 
+                                    class="btn btn-link btn-lg color-primary" 
                                     data-original-title="Edit Record">
                                 <i class="fa fa-edit"></i>
                             </a>';
