@@ -30,7 +30,7 @@ class TaskCategoryController extends Controller
                     if (auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) {
                         $btn_edit = '<a data-toggle="tooltip" 
                                         href="' . route('taskCategories.edit', $row->id) . '" 
-                                        class="btn btn-link btn-primary btn-lg" 
+                                        class="btn btn-link btn-lg color-primary" 
                                         data-original-title="Edit Record">
                                     <i class="fa fa-edit"></i>
                                 </a>';

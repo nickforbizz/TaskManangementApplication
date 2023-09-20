@@ -36,7 +36,7 @@ class UserController extends Controller
                     $btn_edit = $btn_del = $btn_view = null;
                     $btn_view = '<a data-toggle="tooltip" 
                                         href="' . route('users.show', $row->id) . '" 
-                                        class="btn btn-link btn-primary btn-lg" 
+                                        class="btn btn-link btn-lg color-primary" 
                                         data-original-title="View Record">
                                     <i class="fa fa-eye"></i>
                                 </a>';
@@ -44,7 +44,7 @@ class UserController extends Controller
                     if (auth()->user()->hasAnyRole('superadmin|admin') || auth()->id() == $row->id) {
                         $btn_edit = '<a data-toggle="tooltip" 
                                         href="' . route('users.edit', $row->id) . '" 
-                                        class="btn btn-link btn-primary btn-lg" 
+                                        class="btn btn-link btn-lg color-primary" 
                                         data-original-title="Edit Record">
                                     <i class="fa fa-edit"></i>
                                 </a>';

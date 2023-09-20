@@ -51,7 +51,7 @@ class TaskController extends Controller
                     $btn_edit = $btn_del = $btn_view = null;
                     $btn_view = '<a data-toggle="tooltip" 
                             href="' . route('tasks.show', $row->id) . '" 
-                            class="btn btn-link btn-info btn-lg" 
+                            class="btn btn-link btn-lg color-primary" 
                             data-original-title="View Record">
                         <i class="fa fa-eye"></i>
                     </a>';
@@ -59,7 +59,7 @@ class TaskController extends Controller
                     if (auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) {
                         $btn_edit = '<a data-toggle="tooltip" 
                                     href="' . route('tasks.edit', $row->id) . '" 
-                                    class="btn btn-link btn-primary btn-lg" 
+                                    class="btn btn-link btn-lg color-primary" 
                                     data-original-title="Edit Record">
                                 <i class="fa fa-edit"></i>
                             </a>';

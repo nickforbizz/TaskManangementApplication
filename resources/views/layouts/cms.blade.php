@@ -52,7 +52,7 @@
 
 				<a href="{{ route('cms') }}" class="logo">
 					<!-- <img src="{{ asset('assets/img/logo.svg') }}" alt="navbar brand" class="navbar-brand"> -->
-					{{ env('APP_NAME') }}
+					{{ config('app.name', 'Laravel') }}
 				</a>
 				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon">
