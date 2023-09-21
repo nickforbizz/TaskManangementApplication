@@ -19,6 +19,7 @@ class TaskUpserted
     public $new_task;
     public $updated_assignee;
     public $updated_priority;
+    public $updated_status;
 
     /**
      * Create event instance for TaskUpserted
@@ -27,13 +28,15 @@ class TaskUpserted
      * @param  [bool] $new_task
      * @param  [type] $updated_assignee
      * @param  [type] $updated_priority
+     * @param  [type] $updated_status
      */
-    public function __construct(Task $task, $new_task, $updated_assignee, $updated_priority)
+    public function __construct(Task $task, $new_task, $updated_assignee, $updated_priority, $updated_status)
     {
         $this->task = $task;
         $this->new_task = $new_task;
         $this->updated_assignee = $updated_assignee;
         $this->updated_priority = $updated_priority;
+        $this->updated_status = $updated_status;
     }
 
     /**

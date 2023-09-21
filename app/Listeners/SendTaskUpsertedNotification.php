@@ -30,6 +30,7 @@ class SendTaskUpsertedNotification
         $new_task = $event->new_task;
         $updated_assignee = $event->updated_assignee;
         $updated_priority = $event->updated_priority;
+        $updated_status = $event->updated_status;
         $admins = User::whereHas('roles', function ($query) {
             $query->whereIn('name', ['admin', 'superadmin']);
         })->get();
@@ -43,12 +44,17 @@ class SendTaskUpsertedNotification
         
         if ($updated_assignee) {
             $event->task->assignee->notify(new TaskAssigneeNotification($task));
-            // Notification::send($admins, new NewTaskNotification($task, "Task number {$task->id} has been assigned to {$assignee->email}"));
+            Notification::send($admins, new NewTaskNotification($task, "Task number {$task->id} has been assigned to {$assignee->email}"));
         }
         
         if ($updated_priority) {
             $assignee->notify(new TaskPriorityNotification($task));
-            // Notification::send($admins, new NewTaskNotification($task, "Priority for task number {$task->id} assigned to {$assignee->email} has changed to ".$task->priority->getLabelText()));
+            Notification::send($admins, new NewTaskNotification($task, "Priority for task number {$task->id} assigned to {$assignee->email} has changed to ".$task->priority->getLabelText()));
+        }
+
+        if ($updated_status) {
+            $assignee->notify(new TaskStatusNotification($task));
+            Notification::send($admins, new NewTaskNotification($task, "Status for task number {$task->id} assigned to {$assignee->email} has changed to ".$task->status->getLabelText()));
         }
     }
 }

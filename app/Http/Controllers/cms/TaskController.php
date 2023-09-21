@@ -136,6 +136,10 @@ class TaskController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param  UpdateTaskRequest $request
+     * @param  Task              $task
+     * @return void
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
@@ -145,12 +149,17 @@ class TaskController extends Controller
         
         // Dispatch the event for task reassignment
         if ((int)$old_task->assigned_to != (int)$task->assigned_to) {
-            event(new TaskUpserted($task, $new_task=false, $updated_assignee=true, $updated_priority=false));
+            event(new TaskUpserted($task, $new_task=false, $updated_assignee=true, $updated_priority=false, $updated_status=false));
         }
         
         // Dispatch the event for task priority change
         if ((int) $old_task->priority->getLabelVal() != (int) $task->priority->getLabelVal()) {
-            event(new TaskUpserted($task, $new_task=false, $updated_assignee=false, $updated_priority=true));
+            event(new TaskUpserted($task, $new_task=false, $updated_assignee=false, $updated_priority=true, $updated_status=false));
+        }
+
+        // Dispatch the event for task status change
+        if ((int) $old_task->status->getLabelVal() != (int) $task->status->getLabelVal()) {
+            event(new TaskUpserted($task, $new_task=false, $updated_assignee=false, $updated_priority=false, $updated_status=true));
         }
 
         // Redirect the Task to the Task's profile page
