@@ -33,7 +33,7 @@
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">List of Available Record(s)</h4>
                         @can('create tasks')
-                        <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round ml-auto bg-primary" >
+                        <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round ml-auto" >
                             <i class="flaticon-add mr-2"></i>
                             Add Record
                         </a> 

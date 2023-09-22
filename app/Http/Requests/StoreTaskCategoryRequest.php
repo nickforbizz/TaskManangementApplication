@@ -26,7 +26,15 @@ class StoreTaskCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:2', Rule::unique('product_categories')],
+            'name' => [
+                'required', 
+                'min:2', 
+                'max:255',
+                Rule::unique('task_categories')
+            ],
+            'description' => 'nullable',
+            'created_by' => 'required:users',
+            'slug' => 'unique:task_categories,slug',
         ];
     }
 
@@ -36,6 +44,15 @@ class StoreTaskCategoryRequest extends FormRequest
             'unique' => ':attribute is already used',
             'required' => 'The :attribute field is required.',
         ];
+    }
+
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'slug' => Str::slug($this->input('name')),
+            'created_by' => Auth::id(),
+        ]);
     }
 
 

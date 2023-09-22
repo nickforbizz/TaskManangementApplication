@@ -71,7 +71,7 @@ class TaskController extends Controller
                                     class="btn btn-link btn-danger btn-lg" 
                                     onclick="delRecord(`' . $row->id . '`, `' . route('tasks.destroy', $row->id) . '`, `#tb_Tasks`)"
                                     data-original-title="Remove">
-                                <i class="fa fa-times"></i>
+                                <i class="fa fa-trash"></i>
                             </button>';
                     }
                     return $btn_view . $btn_edit . $btn_del;

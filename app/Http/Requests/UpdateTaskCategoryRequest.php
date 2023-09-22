@@ -3,7 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class UpdateTaskCategoryRequest extends FormRequest
 {
@@ -24,7 +26,18 @@ class UpdateTaskCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required|min:2', Rule::unique('product_categories')->ignore($this->id)],
+            'name' => [
+                'required', 
+                'min:2', 
+                'max:255',
+                Rule::unique('task_categories')->ignore($this->id)
+            ],
+            'description' => 'nullable',
+            'created_by' => 'required:users',
+            'slug' => [
+                'nullable',
+                Rule::unique('tasks')->ignore($this->task)
+            ],
         ];
     }
 
@@ -34,5 +47,13 @@ class UpdateTaskCategoryRequest extends FormRequest
             'unique' => ':attribute is already used',
             'required' => 'The :attribute field is required.',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'slug' => Str::slug($this->input('name')),
+            'created_by' => Auth::id(),
+        ]);
     }
 }

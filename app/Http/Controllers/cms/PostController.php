@@ -62,7 +62,7 @@ class PostController extends Controller
                                     class="btn btn-link btn-danger" 
                                     onclick="delRecord(`' . $row->id . '`, `' . route('posts.destroy', $row->id) . '`, `#tb_posts`)"
                                     data-original-title="Remove">
-                                <i class="fa fa-times"></i>
+                                <i class="fa fa-trash"></i>
                             </button>';
                     }
                     return $btn_edit . $btn_del;

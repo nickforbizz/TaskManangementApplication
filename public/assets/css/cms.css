@@ -35,6 +35,11 @@
     border-color: var(--main-color) !important;
 }
 
+.btn-primary:hover{
+  background-color: var(--tertiary-color) !important;
+  border-color: var(--main-color) !important;
+}
+
 .navbar-header[data-background-color=blue2] {
     background: var(--main-color) !important;
 }
@@ -44,6 +49,10 @@
 
 .sidebar.sidebar-style-2 .nav.nav-primary>.nav-item.active>a {
     background: var(--main-color) !important;
+}
+
+.cms-sidebar > .nav-item:not(.active) > a > i{
+  color: var(--main-color) !important;
 }
 
 .bg-primary-gradient {

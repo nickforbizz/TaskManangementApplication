@@ -29,7 +29,11 @@ class PermissionTableSeeder extends Seeder
         $users = User::where('active', 1)->get();
 
 
-
+        /**
+         **************************************************************
+         ****************** System Users  Auth ************************
+         **************************************************************
+         */
         // Users 
         Permission::create([
             'name' => 'create users',
@@ -59,7 +63,11 @@ class PermissionTableSeeder extends Seeder
 
 
 
-
+        /**
+         **************************************************************
+         ****************** System Modules *************************
+         **************************************************************
+         */
         // Post Categories
         Permission::create([
             'name' => 'create post categories',
@@ -118,7 +126,52 @@ class PermissionTableSeeder extends Seeder
         ]);
 
 
+        // Task Categories
+        Permission::create([
+            'name' => 'create task categories',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
+        Permission::create([
+            'name' => 'edit task categories',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
+        Permission::create([
+            'name' => 'delete task categories',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
 
+
+
+        // Tasks
+        Permission::create([
+            'name' => 'create tasks',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
+        Permission::create([
+            'name' => 'edit tasks',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
+        Permission::create([
+            'name' => 'delete tasks',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
+
+
+
+
+
+
+        /**
+         **************************************************************
+         ****************** System Parameters *************************
+         **************************************************************
+         */
 
         // Roles
         Permission::create([

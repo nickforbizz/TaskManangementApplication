@@ -47,13 +47,16 @@ Route::get('/optimize', function () {
     Artisan::call('config:cache');
     Artisan::call('optimize');
     Artisan::call('storage:link');
-    Artisan::call('composer dump-autoload');
-    return 'done';
+    // Artisan::call('composer dump-autoload');
+    return response()
+            ->json('Done > optimizing', 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
 });
 
 Route::get('/flush-perms', function () {
     Artisan::call('permission:cache-reset');
     // return what you want
+    return response()
+            ->json('Done > permission:cache-reset', 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
 });
 
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');

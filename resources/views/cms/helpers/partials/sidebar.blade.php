@@ -31,7 +31,7 @@
 					</div>
 				</div>
 			</div>
-			<ul class="nav nav-primary">
+			<ul class="nav nav-primary cms-sidebar">
 				<li class="nav-item @if(Route::currentRouteName() == 'cms') active @endif">
 					<a href="{{ route('cms') }}">
 						<i class="fas fa-home"></i>
@@ -55,9 +55,24 @@
 				</li>
 				@endif
 
+				<li class="nav-item @if(Route::is('taskCategories.*')) active @endif">
+					<a href="{{ route('taskCategories.index') }}">
+						<i class="icon-information"></i>
+						<p> TaskCategories</p>
+					</a>
+				</li>
+
+				<li class="nav-item @if(Route::is('tasks.*')) active @endif">
+					<a href="{{ route('tasks.index') }}">
+						<i class="fas fa-tasks"></i>
+						<p> Tasks</p>
+					</a>
+				</li>
+
+
 				<li class="nav-item @if(Route::is('postCategories.*')) active @endif">
 					<a href="{{ route('postCategories.index') }}">
-						<i class="far fa-clone"></i>
+						<i class="icon-information"></i>
 						<p> PostCategories</p>
 					</a>
 				</li>
@@ -69,23 +84,10 @@
 					</a>
 				</li>
 
-				<li class="nav-item @if(Route::is('taskCategories.*')) active @endif">
-					<a href="{{ route('taskCategories.index') }}">
-						<i class="far fa-clone"></i>
-						<p> TaskCategories</p>
-					</a>
-				</li>
-
-				<li class="nav-item @if(Route::is('tasks.*')) active @endif">
-					<a href="{{ route('tasks.index') }}">
-						<i class="far fa-edit"></i>
-						<p> Tasks</p>
-					</a>
-				</li>
 
 				<li class="nav-item @if(Route::is('reports.*')) active @endif">
 					<a href="{{ route('reports.index') }}">
-						<i class="far fa-edit"></i>
+						<i class="fas fa-chart-line"></i>
 						<p> Reports</p>
 					</a>
 				</li>
