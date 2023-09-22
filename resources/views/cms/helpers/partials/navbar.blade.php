@@ -58,7 +58,7 @@
 				@php 
 				use Carbon\Carbon;
 				$notifications = Auth::user()->unreadNotifications;
-				$unread_notifications = $notifications->count(); 
+				$unread_notifications = $notifications->count();  
 				@endphp 
 				<a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i class="fa fa-bell"></i>
