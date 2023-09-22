@@ -57,8 +57,9 @@
 			<li class="nav-item dropdown hidden-caret">
 				@php 
 				use Carbon\Carbon;
-				$notifications = Auth::user()->unreadNotifications;
-				$unread_notifications = $notifications->count();  
+				$all_notifications = Auth::user()->unreadNotifications;
+				$notifications = Auth::user()->unreadNotifications()->take(4)->get();
+				$unread_notifications = $all_notifications->count();  
 				@endphp 
 				<a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i class="fa fa-bell"></i>
@@ -66,7 +67,7 @@
 				</a>
 				<ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
 					<li>
-						<div class="dropdown-title">You have {{ $unread_notifications }} new notification</div>
+						<div class="dropdown-title">You have {{ $unread_notifications }} new notification(s)</div>
 					</li>
 					<li>
 						<div class="notif-scroll scrollbar-outer">
