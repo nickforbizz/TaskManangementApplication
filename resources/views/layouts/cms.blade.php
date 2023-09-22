@@ -32,7 +32,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-theme@0.1.0-beta.10/dist/select2-bootstrap.min.css" rel="stylesheet" />
 	
 
-
+	<!-- Custom CSS  -->
 	<link rel="stylesheet" href="{{ asset('assets/css/cms.css') }}">
 
 
@@ -45,7 +45,7 @@
 </head>
 
 <body>
-	<div class="wrapper">
+	<div class="wrapper" id="contentHolder">
 		<div class="main-header">
 			<!-- Logo Header -->
 			<div class="logo-header" data-background-color="blue">
@@ -156,6 +156,9 @@
 
 	<!-- select2 -->
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+	<!-- Custom JS -->
+	<script src="{{ asset('assets/js/cms.js') }}"></script>
 
 
 	<script>
