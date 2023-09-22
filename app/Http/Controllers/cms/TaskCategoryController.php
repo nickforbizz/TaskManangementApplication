@@ -19,12 +19,29 @@ class TaskCategoryController extends Controller
     public function index(Request $request)
     {
         // return datatable of the makes available
-        $data = TaskCategory::orderBy('created_at', 'desc')->get();
+        $data = TaskCategory::orderBy('created_at', 'desc');
+
+        // Use the withTrashed method to include soft-deleted records
+        $data = $data->withTrashed();
+
+        // Filter soft-deleted items
+        if ($request->has('trash_filter')) {
+            if ((int) $request->trash_filter === 1) {
+                $data->whereNull('deleted_at');
+            }elseif ((int) $request->trash_filter === 2) {
+                $data->whereNotNull('deleted_at');
+            }
+        }
+        
         if ($request->ajax()) {
+            $data = $data->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($row) {
                     return date_format($row->created_at, 'Y/m/d H:i');
+                })
+                ->editColumn('deleted_at', function ($row) {
+                    return !is_null($row->deleted_at) ? date_format($row->deleted_at, 'Y/m/d H:i') : $row->deleted_at;
                 })
                 ->editColumn('description', function ($row) {
                     return Str::limit($row->description, 20, '...');
@@ -34,7 +51,7 @@ class TaskCategoryController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $btn_edit = $btn_del = null;
-                    if (auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) {
+                    if ((auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) && is_null($row->deleted_at)) {
                         $btn_edit = '<a data-toggle="tooltip" 
                                         href="' . route('taskCategories.edit', $row->id) . '" 
                                         class="btn btn-link btn-lg color-primary" 
@@ -43,7 +60,7 @@ class TaskCategoryController extends Controller
                                 </a>';
                     }
 
-                    if (auth()->user()->hasRole('superadmin')) {
+                    if (is_null($row->deleted_at) && auth()->user()->hasRole('superadmin')) {
                         $btn_del = '<button type="button" 
                                     data-toggle="tooltip" 
                                     title="" 
@@ -55,7 +72,7 @@ class TaskCategoryController extends Controller
                     }
                     return $btn_edit . $btn_del;
                 })
-                ->rawColumns(['description', 'created_by', 'action'])
+                ->rawColumns(['description', 'created_at', 'deleted_at', 'created_by', 'action'])
                 ->make(true);
         }
 

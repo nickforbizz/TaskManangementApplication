@@ -25,6 +25,9 @@ class TaskController extends Controller
     {
         // return datatable of the makes available
         $data = Task::orderBy('created_at', 'desc')->with('task_category')->get();
+
+        
+
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addIndexColumn()
