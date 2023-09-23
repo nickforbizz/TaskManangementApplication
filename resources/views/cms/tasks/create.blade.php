@@ -6,7 +6,7 @@
         <h4 class="page-title"> Tasks </h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
-                <a href="#">
+                <a href="{{ route('cms') }}">
                     <i class="flaticon-home"></i>
                 </a>
             </li>
@@ -32,7 +32,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Add Record</h4>
-                        <a href="{{ route('tasks.index') }}" class="btn btn-primary btn-round ml-auto bg-primary" >
+                        <a href="{{ route('tasks.index') }}" class="btn btn-primary btn-round ml-auto" >
                             <i class="flaticon-left-arrow-4 mr-2"></i>
                             View Records
                         </a> 
@@ -187,7 +187,7 @@
 
                         <div class="card">
                             <div class="form-group form-floating-label">
-                                <button type="submit" class="btn btn-success btn-round float-right">Submit</button>
+                                <button type="submit" class="btn btn-primary btn-round btn-block">Submit</button>
                             </div>
                         </div>
                     </form>

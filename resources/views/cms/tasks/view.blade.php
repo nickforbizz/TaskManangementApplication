@@ -6,7 +6,7 @@
         <h4 class="page-title"> Tasks </h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
-                <a href="#">
+                <a href="{{ route('cms') }}">
                     <i class="flaticon-home"></i>
                 </a>
             </li>

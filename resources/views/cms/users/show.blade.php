@@ -6,7 +6,7 @@
         <h4 class="page-title"> User</h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
-                <a href="#">
+                <a href="{{ route('cms') }}">
                     <i class="flaticon-home"></i>
                 </a>
             </li>
@@ -119,7 +119,7 @@
     
                                         <div class="">
                                             <div class="form-group form-floating-label">
-                                                <button class="btn btn-success btn-round float-right">Submit</button>
+                                                <button class="btn btn-primary btn-round btn-block">Submit</button>
                                             </div>
                                         </div>
                                     </form>

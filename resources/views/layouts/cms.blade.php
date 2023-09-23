@@ -30,13 +30,13 @@
 	<!-- select2 -->
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-theme@0.1.0-beta.10/dist/select2-bootstrap.min.css" rel="stylesheet" />
-	
 
 
+	<!-- Custom CSS  -->
 	<link rel="stylesheet" href="{{ asset('assets/css/cms.css') }}">
 
 
-	
+
 
 
 	@stack('styles')
@@ -45,7 +45,7 @@
 </head>
 
 <body>
-	<div class="wrapper">
+	<div class="wrapper" id="contentHolder">
 		<div class="main-header">
 			<!-- Logo Header -->
 			<div class="logo-header" data-background-color="blue">
@@ -157,16 +157,19 @@
 	<!-- select2 -->
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+	<!-- Custom JS -->
+	<script src="{{ asset('assets/js/cms.js') }}"></script>
+
 
 	<script>
 		$(document).ready(function() {
 			// select2 init
-			
+
 			$('.select2').select2({
 				placeholder: 'Select an option',
-				theme: "bootstrap",	
+				theme: "bootstrap",
 			});
-			
+
 
 			// tinymce.init
 			tinymce.init({
@@ -176,7 +179,7 @@
 			});
 		});
 
-		
+
 		function readURL(input) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
@@ -200,7 +203,8 @@
 			}).then(function(willDelete) {
 				if (willDelete.isConfirmed) {
 					let payload = {
-						id, _token: '{{ csrf_token() }}'
+						id,
+						_token: '{{ csrf_token() }}'
 					};
 					$.ajax({
 						url: url,
@@ -228,7 +232,7 @@
 									$("#product_catsModal").modal('hide');
 								});
 							}
-	
+
 						},
 						error: function(err) {
 							console.error(err);
@@ -240,7 +244,7 @@
 						}
 					});
 
-				}else {
+				} else {
 					// Code for when the user clicks the "Cancel" button
 					// Prevent the form submission
 					event.preventDefault();
@@ -251,6 +255,16 @@
 					title: 'Record Response',
 					text: 'This will not be deleted',
 				});
+			});
+		}
+
+
+
+
+		// Filter table
+		function filterTbReload(tb_id) {
+			$('.trash_filter').on('change', function() {
+				$(tb_id).DataTable().ajax.reload();
 			});
 		}
 	</script>

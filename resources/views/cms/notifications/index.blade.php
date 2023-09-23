@@ -6,7 +6,7 @@
         <h4 class="page-title"> Notifications </h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
-                <a href="#">
+                <a href="{{ route('cms') }}">
                     <i class="flaticon-home"></i>
                 </a>
             </li>
@@ -32,7 +32,8 @@
                 <div class="card-body">
                     @forelse($notifications as $notification)
                         <div class="alert alert-success" role="alert">
-                            [{{ $notification->created_at }}]  {{ $notification->data['message'] }} <br> {{ $notification->data['name'] }} ({{ $notification->data['email'] }}) .
+                            [{{ $notification->created_at }}]  {{ $notification->data['message'] }} 
+                            <br> <b> {{ $notification->data['name'] }} </b> ({{ $notification->data['email'] }}) .
                             <a href="#" class="float-right mark-as-read" data-id="{{ $notification->id }}">
                                 Mark as read
                             </a>

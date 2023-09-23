@@ -11,6 +11,7 @@ use App\Http\Requests\StorePostCategoryRequest;
 use App\Http\Requests\UpdatePostCategoryRequest;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use DataTables;
 
 class PostCategoryController extends Controller
@@ -27,6 +28,12 @@ class PostCategoryController extends Controller
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($row) {
                     return date_format($row->created_at, 'Y/m/d H:i');
+                })
+                ->editColumn('created_by', function ($row) {
+                    return isset($row->created_by) ? $row?->user?->email : 'N/A';
+                })
+                ->editColumn('description', function ($row) {
+                    return Str::limit($row->description, 20, '...');
                 })
                 ->addColumn('action', function ($row) {
                     $btn_edit = $btn_del = null;
@@ -46,12 +53,12 @@ class PostCategoryController extends Controller
                                     class="btn btn-link btn-danger" 
                                     onclick="delRecord(`' . $row->id . '`, `' . route('postCategories.destroy', $row->id) . '`, `#tb_postCategories`)"
                                     data-original-title="Remove">
-                                <i class="fa fa-times"></i>
+                                <i class="fa fa-trash"></i>
                             </button>';
                     }
                     return $btn_edit . $btn_del;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['description', 'created_by', 'action'])
                 ->make(true);
         }
 

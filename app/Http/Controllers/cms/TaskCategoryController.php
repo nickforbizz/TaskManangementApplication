@@ -8,6 +8,7 @@ use App\Http\Requests\StoreTaskCategoryRequest;
 use App\Http\Requests\UpdateTaskCategoryRequest;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use DataTables;
 
 class TaskCategoryController extends Controller 
@@ -17,17 +18,44 @@ class TaskCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        // return datatable of the makes available
-        $data = TaskCategory::orderBy('created_at', 'desc')->get();
+        
         if ($request->ajax()) {
+            // return datatable of the makes available
+            $data = TaskCategory::orderBy('created_at', 'desc');
+    
+            // Use the withTrashed method to include soft-deleted records
+            $data = $data->withTrashed();
+    
+            // Filter soft-deleted items
+            if ($request->has('trash_filter')) {
+                if ((int) $request->trash_filter === 1) {
+                    $data->whereNull('deleted_at');
+                }elseif ((int) $request->trash_filter === 2) {
+                    $data->whereNotNull('deleted_at');
+                }
+            }
+
+            
+            $data = $data->get();
+
+
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($row) {
                     return date_format($row->created_at, 'Y/m/d H:i');
                 })
+                ->editColumn('deleted_at', function ($row) {
+                    return !is_null($row->deleted_at) ? date_format($row->deleted_at, 'Y/m/d H:i') : $row->deleted_at;
+                })
+                ->editColumn('description', function ($row) {
+                    return Str::limit($row->description, 20, '...');
+                })
+                ->editColumn('created_by', function ($row) {
+                    return isset($row->created_by) ? $row?->user?->email : 'N/A';
+                })
                 ->addColumn('action', function ($row) {
                     $btn_edit = $btn_del = null;
-                    if (auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) {
+                    if ((auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) && is_null($row->deleted_at)) {
                         $btn_edit = '<a data-toggle="tooltip" 
                                         href="' . route('taskCategories.edit', $row->id) . '" 
                                         class="btn btn-link btn-lg color-primary" 
@@ -36,19 +64,19 @@ class TaskCategoryController extends Controller
                                 </a>';
                     }
 
-                    if (auth()->user()->hasRole('superadmin')) {
+                    if (is_null($row->deleted_at) && auth()->user()->hasRole('superadmin')) {
                         $btn_del = '<button type="button" 
                                     data-toggle="tooltip" 
                                     title="" 
                                     class="btn btn-link btn-danger" 
                                     onclick="delRecord(`' . $row->id . '`, `' . route('taskCategories.destroy', $row->id) . '`, `#tb_taskCategories`)"
                                     data-original-title="Remove">
-                                <i class="fa fa-times"></i>
+                                <i class="fa fa-trash"></i>
                             </button>';
                     }
                     return $btn_edit . $btn_del;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['description', 'created_at', 'deleted_at', 'created_by', 'action'])
                 ->make(true);
         }
 
@@ -69,35 +97,37 @@ class TaskCategoryController extends Controller
      */
     public function store(StoreTaskCategoryRequest $request)
     {
-        TaskCategory::create($request->all());
-        return redirect()->back()->with('success', 'Record Created Successfully');
+        TaskCategory::create($request->validated());
+        return redirect()
+            ->route('taskCategories.index')
+            ->with('success', 'Record created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(TaskCategory $TaskCategory)
+    public function show(TaskCategory $taskCategory)
     {
         return response()
-            ->json($TaskCategory, 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
+            ->json($taskCategory, 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TaskCategory $TaskCategory)
+    public function edit(TaskCategory $taskCategory)
     {
-        return view('cms.taskCategories.create', compact('TaskCategory'));
+        return view('cms.taskCategories.create', compact('taskCategory'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskCategoryRequest $request, TaskCategory $TaskCategory)
+    public function update(UpdateTaskCategoryRequest $request, TaskCategory $taskCategory)
     {
-        $TaskCategory->update($request->all());
+        $taskCategory->update($request->validated());
 
-        // Redirect the user to the user's profile page
+        // Redirect the user to the list page
         return redirect()
             ->route('taskCategories.index')
             ->with('success', 'Record updated successfully!');
@@ -106,9 +136,9 @@ class TaskCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TaskCategory $TaskCategory)
+    public function destroy(TaskCategory $taskCategory)
     {
-        if ($TaskCategory->delete()) {
+        if ($taskCategory->delete()) {
             return response()->json([
                 'code' => 1,
                 'msg' => 'Record deleted successfully'

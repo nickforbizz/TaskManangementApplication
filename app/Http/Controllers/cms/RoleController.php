@@ -45,7 +45,7 @@ class RoleController extends Controller
                                     class="btn btn-link btn-danger" 
                                     onclick="delRecord(`' . $row->id . '`, `' . route('roles.destroy', $row->id) . '`, `#tb_roles`)"
                                     data-original-title="Remove">
-                                <i class="fa fa-times"></i>
+                                <i class="fa fa-trash"></i>
                             </button>';
                     }
                     return $btn_edit . $btn_del;

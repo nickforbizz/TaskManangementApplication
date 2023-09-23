@@ -6,7 +6,7 @@
         <h4 class="page-title"> Task Categories </h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
-                <a href="#">
+                <a href="{{ route('cms') }}">
                     <i class="flaticon-home"></i>
                 </a>
             </li>
@@ -57,13 +57,9 @@
 
 
                         <div class="form-group form-floating-label">
-                            @if(isset($taskCategory->id)) 
-                            <label for="name" class="">Name</label>
-                            <input id="name" type="text" class="form-control input-border-bottom @error('name') is-invalid @enderror"  value="{{ $taskCategory->name ?? '' }}" readonly disabled />
-                            @else
+                            
                             <input id="name" type="text" class="form-control input-border-bottom @error('name') is-invalid @enderror" name="name"  value="{{ $taskCategory->name ?? '' }}" required />
-                            <label for="name" class="placeholder">name</label>
-                            @endif
+                            <label for="name" class="placeholder"> Name</label>
                             @error('email') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -82,7 +78,7 @@
 
                         <div class="card">
                             <div class="form-group form-floating-label">
-                                <button class="btn btn-success btn-round float-right">Submit</button>
+                                <button class="btn btn-primary btn-round btn-block">Submit</button>
                             </div>
                         </div>
                     </form>
