@@ -18,23 +18,27 @@ class TaskCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        // return datatable of the makes available
-        $data = TaskCategory::orderBy('created_at', 'desc');
-
-        // Use the withTrashed method to include soft-deleted records
-        $data = $data->withTrashed();
-
-        // Filter soft-deleted items
-        if ($request->has('trash_filter')) {
-            if ((int) $request->trash_filter === 1) {
-                $data->whereNull('deleted_at');
-            }elseif ((int) $request->trash_filter === 2) {
-                $data->whereNotNull('deleted_at');
-            }
-        }
         
         if ($request->ajax()) {
+            // return datatable of the makes available
+            $data = TaskCategory::orderBy('created_at', 'desc');
+    
+            // Use the withTrashed method to include soft-deleted records
+            $data = $data->withTrashed();
+    
+            // Filter soft-deleted items
+            if ($request->has('trash_filter')) {
+                if ((int) $request->trash_filter === 1) {
+                    $data->whereNull('deleted_at');
+                }elseif ((int) $request->trash_filter === 2) {
+                    $data->whereNotNull('deleted_at');
+                }
+            }
+
+            
             $data = $data->get();
+
+
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($row) {

@@ -46,7 +46,6 @@
                     @include('cms.helpers.partials.feedback')
                     @include('cms.helpers.partials.trash_filter')
                     <div class="table-responsive">
-
                         <table id="tb_taskCategories" class="display table table-striped table-hover">
                             <thead>
                                 <tr>

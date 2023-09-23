@@ -23,16 +23,33 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        // return datatable of the makes available
-        $data = Task::orderBy('created_at', 'desc')->with('task_category')->get();
-
-        
 
         if ($request->ajax()) {
+            // return datatable of the makes available
+            $data = Task::orderBy('created_at', 'desc')->with('task_category');
+
+            // Use the withTrashed method to include soft-deleted records
+            $data = $data->withTrashed();
+
+            // Filter soft-deleted items
+            if ($request->has('trash_filter')) {
+                if ((int) $request->trash_filter === 1) {
+                    $data->whereNull('deleted_at');
+                } elseif ((int) $request->trash_filter === 2) {
+                    $data->whereNotNull('deleted_at');
+                }
+            }
+
+            $data = $data->get();
+
+            
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('completion_date', function ($row) {
                     return date_format($row->completion_date, 'Y/m/d H:i');
+                })
+                ->editColumn('deleted_at', function ($row) {
+                    return !is_null($row->deleted_at) ? date_format($row->deleted_at, 'Y/m/d H:i') : $row->deleted_at;
                 })
                 ->editColumn('due_date', function ($row) {
                     return date_format($row->due_date, 'Y/m/d H:i');
@@ -58,7 +75,7 @@ class TaskController extends Controller
                         <i class="fa fa-eye"></i>
                     </a>';
 
-                    if (auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) {
+                    if ((auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) && is_null($row->deleted_at)) {
                         $btn_edit = '<a data-toggle="tooltip" 
                                     href="' . route('tasks.edit', $row->id) . '" 
                                     class="btn btn-link btn-lg color-primary" 
@@ -67,7 +84,7 @@ class TaskController extends Controller
                             </a>';
                     }
 
-                    if (auth()->user()->hasAnyRole('superadmin|admin')) {
+                    if (auth()->user()->hasAnyRole('superadmin|admin') && is_null($row->deleted_at)) {
                         $btn_del = '<button type="button" 
                                     data-toggle="tooltip" 
                                     title="" 
@@ -79,7 +96,7 @@ class TaskController extends Controller
                     }
                     return $btn_view . $btn_edit . $btn_del;
                 })
-                ->rawColumns(['category_id', 'title', 'priority', 'action'])
+                ->rawColumns(['category_id', 'title', 'priority', 'deleted_at', 'action'])
                 ->make(true);
         }
 
@@ -103,12 +120,12 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         // $request = $this->storeAttachmentFiles($request);
-        
+
         $task = Task::create($request->validated());
 
         if ($task) {
             // Dispatch the event
-            event(new TaskUpserted($task, $new_task=true, $updated_assignee=false, $updated_priority=false));
+            event(new TaskUpserted($task, $new_task = true, $updated_assignee = false, $updated_priority = false));
             return redirect()
                 ->route('tasks.index')
                 ->with('success', 'Record Created Successfully');
@@ -149,20 +166,20 @@ class TaskController extends Controller
         // $request = $this->storeAttachmentFiles($request);
         $old_task = Task::find($task->id);
         $task->update($request->validated());
-        
+
         // Dispatch the event for task reassignment
         if ((int)$old_task->assigned_to != (int)$task->assigned_to) {
-            event(new TaskUpserted($task, $new_task=false, $updated_assignee=true, $updated_priority=false, $updated_status=false));
+            event(new TaskUpserted($task, $new_task = false, $updated_assignee = true, $updated_priority = false, $updated_status = false));
         }
-        
+
         // Dispatch the event for task priority change
         if ((int) $old_task->priority->getLabelVal() != (int) $task->priority->getLabelVal()) {
-            event(new TaskUpserted($task, $new_task=false, $updated_assignee=false, $updated_priority=true, $updated_status=false));
+            event(new TaskUpserted($task, $new_task = false, $updated_assignee = false, $updated_priority = true, $updated_status = false));
         }
 
         // Dispatch the event for task status change
         if ((int) $old_task->status->getLabelVal() != (int) $task->status->getLabelVal()) {
-            event(new TaskUpserted($task, $new_task=false, $updated_assignee=false, $updated_priority=false, $updated_status=true));
+            event(new TaskUpserted($task, $new_task = false, $updated_assignee = false, $updated_priority = false, $updated_status = true));
         }
 
         // Redirect the Task to the Task's profile page
