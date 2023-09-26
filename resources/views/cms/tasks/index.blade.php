@@ -42,7 +42,6 @@
                 </div>
                 <div class="card-body">
 
-                    @include('cms.helpers.partials.feedback')
                     @include('cms.helpers.partials.trash_filter')
                     <div class="table-responsive">
                         <table id="tb_tasks" class="display table table-striped table-hover">

@@ -30,13 +30,13 @@ class UpdateTaskCategoryRequest extends FormRequest
                 'required', 
                 'min:2', 
                 'max:255',
-                Rule::unique('task_categories')->ignore($this->id)
+                Rule::unique('task_categories')->ignore($this->taskCategory)
             ],
             'description' => 'nullable',
             'created_by' => 'required:users',
             'slug' => [
                 'nullable',
-                Rule::unique('tasks')->ignore($this->task)
+                Rule::unique('task_categories')->ignore($this->taskCategory)
             ],
         ];
     }

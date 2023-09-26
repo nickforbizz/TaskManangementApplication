@@ -57,14 +57,9 @@
 
 
                         <div class="form-group form-floating-label">
-                            @if(isset($postCategory->id)) 
-                            <label for="name" class="">Name</label>
-                            <input id="name" type="text" class="form-control input-border-bottom @error('name') is-invalid @enderror"  value="{{ $postCategory->name ?? '' }}" readonly disabled />
-                            @else
                             <input id="name" type="text" class="form-control input-border-bottom @error('name') is-invalid @enderror" name="name"  value="{{ $postCategory->name ?? '' }}" required />
-                            <label for="name" class="placeholder">name</label>
-                            @endif
-                            @error('email') <span class="text-danger">{{ $message }}</span>
+                            <label for="name" class="placeholder"> Name </label>
+                            @error('name') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 

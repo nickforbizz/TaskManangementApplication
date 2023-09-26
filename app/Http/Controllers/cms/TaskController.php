@@ -39,10 +39,13 @@ class TaskController extends Controller
                     $data->whereNotNull('deleted_at');
                 }
             }
-
+            
+            if(!auth()->user()->hasAnyRole('superadmin|admin')){
+                $data->where('created_by', auth()->id());
+            }
             $data = $data->get();
 
-            
+
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('completion_date', function ($row) {
