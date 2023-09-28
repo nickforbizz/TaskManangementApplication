@@ -43,6 +43,7 @@ class TaskController extends Controller
             if(!auth()->user()->hasAnyRole('superadmin|admin')){
                 $data->where('created_by', auth()->id());
             }
+
             $data = $data->get();
 
 
@@ -126,6 +127,10 @@ class TaskController extends Controller
 
         $task = Task::create($request->validated());
 
+        if ($request->hasFile('attachment')) {
+            // create task attachment
+        }
+
         if ($task) {
             // Dispatch the event
             event(new TaskUpserted($task, $new_task = true, $updated_assignee = false, $updated_priority = false));
@@ -169,6 +174,10 @@ class TaskController extends Controller
         // $request = $this->storeAttachmentFiles($request);
         $old_task = Task::find($task->id);
         $task->update($request->validated());
+
+        if ($request->hasFile('attachment')) {
+            // update task attachment
+        }
 
         // Dispatch the event for task reassignment
         if ((int)$old_task->assigned_to != (int)$task->assigned_to) {

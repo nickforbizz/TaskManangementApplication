@@ -80,4 +80,9 @@ class Task extends Model
 	{
 		return $this->belongsTo(TaskCategory::class, 'category_id');
 	}
+
+	public function attachments()
+	{
+		return $this->hasMany(TaskAttachment::class);
+	}
 }
