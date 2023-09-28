@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class UpdatePostCategoryRequest extends FormRequest
 {
@@ -25,7 +26,18 @@ class UpdatePostCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required|min:2', Rule::unique('post_categories')],
+            'name' => [
+                'required', 
+                'min:2', 
+                'max:255',
+                Rule::unique('post_categories')->ignore($this->postCategory)
+            ],
+            'description' => 'nullable',
+            'created_by' => 'required:users',
+            'slug' => [
+                'nullable',
+                Rule::unique('post_categories')->ignore($this->postCategory)
+            ],
         ];
     }
 
@@ -35,5 +47,13 @@ class UpdatePostCategoryRequest extends FormRequest
             'unique' => ':attribute is already used',
             'required' => 'The :attribute field is required.',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'slug' => Str::slug($this->input('name')),
+            'created_by' => Auth::id(),
+        ]);
     }
 }

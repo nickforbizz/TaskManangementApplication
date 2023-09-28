@@ -41,9 +41,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    
+
+                    @include('cms.helpers.partials.trash_filter')
                     <div class="table-responsive">
-                        @include('cms.helpers.partials.feedback')
                         <table id="tb_posts" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
@@ -76,7 +76,13 @@
         $('#tb_posts').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('posts.index') }}",
+            ajax: {
+                url: "{{ route('posts.index') }}",
+                data: function(d) {
+                    // Add custom search parameter for trashed items
+                    d.trash_filter = $('.trash_filter').val();
+                }
+        },
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
@@ -105,6 +111,9 @@
             ]
         });
         // #tb_posts
+
+        // Add an event listener to the checkbox to trigger a DataTable search
+        filterTbReload('#tb_posts')
 
   
     });

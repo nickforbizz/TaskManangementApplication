@@ -41,7 +41,7 @@
                 <div class="card-body">
 
                     <!-- form -->
-                    @include('cms.helpers.partials.feedback')
+                    @include('cms.helpers.partials.feedback') 
                     <form id="taskCategories-create" 
                             action="@if(isset($taskCategory->id))  
                             {{ route('taskCategories.update', ['taskCategory' => $taskCategory->id]) }}
