@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $task_id
  * @property string $file_name
+ * @property string $name
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
@@ -32,7 +33,8 @@ class TaskAttachment extends Model
 
 	protected $fillable = [
 		'task_id',
-		'file_name'
+		'file_name',
+		'name',
 	];
 
 	public function task()
