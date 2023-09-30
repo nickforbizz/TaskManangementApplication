@@ -168,14 +168,16 @@
 
                         <div class="row">
                             <div class="form-group form-floating-label">
-                                <label for="featuredimg" class=""> Attachments </label>
-                                <input id="featuredimg" type="file" class="form-control input-border-bottom" name="featuredimg" />
-                                @if (isset($task->photo))
-                                    <img id="blah" src="{{ asset('storage/'.$task->photo) }}" alt="current image" height="100px"/>
-                                @else
-                                    <img id="blah" src="#" alt="no image" height="100px"/>
+                                <label for="attachments" class=""> Attachments </label>
+                                <input id="attachments" type="file" class="form-control input-border-bottom mt-2" name="attachments[]" multiple/>
+                                @if(isset($task->created_by))
+                                    @forelse($task->attachments as $attachment)
+                                        <a href="{{ asset('storage/'.$attachment->file_name) }}" class="alert alert-info mr-2" target="_blank">{{ $attachment->name }}</a>
+                                    @empty
+                                    <div class="alert alert-info">No attachments for this task</div>
+                                    @endforelse
                                 @endif
-                                @error('photo') <span class="text-danger">{{ $message }}</span>
+                                @error('attachments') <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -206,7 +208,7 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        $("#featuredimg").change(function() {
+        $("#attachments").change(function() {
 			readURL(this);
 		});
 

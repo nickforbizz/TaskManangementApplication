@@ -13,6 +13,7 @@ use DataTables;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Models\TaskAttachment;
 use App\Models\TaskCategory;
 use App\Models\User;
 
@@ -39,8 +40,8 @@ class TaskController extends Controller
                     $data->whereNotNull('deleted_at');
                 }
             }
-            
-            if(!auth()->user()->hasAnyRole('superadmin|admin')){
+
+            if (!auth()->user()->hasAnyRole('superadmin|admin')) {
                 $data->where('created_by', auth()->id());
             }
 
@@ -123,17 +124,26 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        // $request = $this->storeAttachmentFiles($request);
 
         $task = Task::create($request->validated());
 
-        if ($request->hasFile('attachment')) {
-            // create task attachment
-        }
+        $request = $this->storeAttachmentFiles($request, $task);
+
+
+
+        // dd("no attachments");
+
 
         if ($task) {
             // Dispatch the event
-            event(new TaskUpserted($task, $new_task = true, $updated_assignee = false, $updated_priority = false));
+            event(new TaskUpserted(
+                $task,
+                $new_task = true,
+                $updated_assignee = false,
+                $updated_priority = false,
+                $updated_status = false
+            ));
+
             return redirect()
                 ->route('tasks.index')
                 ->with('success', 'Record Created Successfully');
@@ -171,27 +181,43 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        // $request = $this->storeAttachmentFiles($request);
         $old_task = Task::find($task->id);
         $task->update($request->validated());
 
-        if ($request->hasFile('attachment')) {
-            // update task attachment
-        }
+        $request = $this->storeAttachmentFiles($request, $old_task);
+
 
         // Dispatch the event for task reassignment
         if ((int)$old_task->assigned_to != (int)$task->assigned_to) {
-            event(new TaskUpserted($task, $new_task = false, $updated_assignee = true, $updated_priority = false, $updated_status = false));
+            event(new TaskUpserted(
+                $task,
+                $new_task = false,
+                $updated_assignee = true,
+                $updated_priority = false,
+                $updated_status = false
+            ));
         }
 
         // Dispatch the event for task priority change
         if ((int) $old_task->priority->getLabelVal() != (int) $task->priority->getLabelVal()) {
-            event(new TaskUpserted($task, $new_task = false, $updated_assignee = false, $updated_priority = true, $updated_status = false));
+            event(new TaskUpserted(
+                $task,
+                $new_task = false,
+                $updated_assignee = false,
+                $updated_priority = true,
+                $updated_status = false
+            ));
         }
 
         // Dispatch the event for task status change
         if ((int) $old_task->status->getLabelVal() != (int) $task->status->getLabelVal()) {
-            event(new TaskUpserted($task, $new_task = false, $updated_assignee = false, $updated_priority = false, $updated_status = true));
+            event(new TaskUpserted(
+                $task,
+                $new_task = false,
+                $updated_assignee = false,
+                $updated_priority = false,
+                $updated_status = true
+            ));
         }
 
         // Redirect the Task to the Task's profile page
@@ -224,20 +250,47 @@ class TaskController extends Controller
     }
 
 
-    private function storeAttachmentFiles(Request $request, Task $Task = null)
+    private function storeAttachmentFiles(Request $request, Task $task)
     {
 
 
         // Store Image
-        if ($request->has('featuredimg')) {
-            // Delete Image
-            if ($Task) {
-                if ($Task->photo && Storage::disk('public')->exists($Task->photo)) {
-                    Storage::disk('public')->delete($Task->photo);
+        if ($request->hasFile('attachments')) {
+
+            // delete task attachment
+            if ($task->attachments->count() > 0) {
+                // dd($task->attachments());
+                foreach ($task->attachments as $file) {
+                    if (Storage::disk('public')->exists('attachments/'.$file->file_name)) {
+                        Storage::disk('public')->delete('attachments/'.$file->file_name);
+                    }
                 }
+                $task->attachments()->delete();
             }
-            $photo_filename = GlobalHelper::saveImage($request->file('featuredimg'), 'tasks', 'public');
-            $request->request->add(['photo' => $photo_filename]);
+
+
+            // create task attachment
+            $attachments = [];
+            foreach ($request->file('attachments') as $file) {
+                $uniqueHash = Str::random(10);
+                $name = $file->getClientOriginalName();
+                // $formattedTime = now()->format('Y-m-d H:i:s');
+                $fileName = 'attachments/' . $uniqueHash . '_' . $file->getClientOriginalName();
+
+                Storage::disk('public')->setVisibility($fileName, 'public');
+                // Store the file in a folder and save its record in the database
+                $file->storeAs('attachments', $fileName, 'public');
+
+                $attachments[] = [
+                    'task_id' => $task->id, // Make sure to set the task ID accordingly
+                    'name' => $name,
+                    'file_name' => $fileName,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+
+            TaskAttachment::insert($attachments);
         }
 
         return  $request;
