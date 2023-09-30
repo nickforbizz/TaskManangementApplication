@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\cms;
 
+use App\Enums\TaskStatus;
 use App\Events\TaskUpserted;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -27,7 +28,8 @@ class TaskController extends Controller
 
         if ($request->ajax()) {
             // return datatable of the makes available
-            $data = Task::orderBy('created_at', 'desc')->with('task_category');
+            $data = Task::orderBy('created_at', 'desc')
+                            ->with('task_category');
 
             // Use the withTrashed method to include soft-deleted records
             $data = $data->withTrashed();
@@ -42,7 +44,8 @@ class TaskController extends Controller
             }
 
             if (!auth()->user()->hasAnyRole('superadmin|admin')) {
-                $data->where('created_by', auth()->id());
+                $data->where('assigned_to', auth()->id())
+                ->orWhere('created_by', auth()->id());
             }
 
             $data = $data->get();
@@ -65,6 +68,9 @@ class TaskController extends Controller
                 ->editColumn('title', function ($row) {
                     return Str::limit($row->title, 10, '...');
                 })
+                ->editColumn('assigned_to', function ($row) {
+                    return str_replace('@admin.com', '', $row->assignee->email);
+                })
                 ->editColumn('priority', function ($row) {
                     return $row->priority->getLabelText();
                 })
@@ -80,7 +86,9 @@ class TaskController extends Controller
                         <i class="fa fa-eye"></i>
                     </a>';
 
-                    if ((auth()->user()->hasAnyRole('superadmin|admin|editor') || auth()->id() == $row->created_by) && is_null($row->deleted_at)) {
+                    if ((auth()->user()->hasAnyRole('superadmin|admin|editor') || 
+                            auth()->id() == $row->assigned_to  ||
+                                auth()->id() == $row->created_by) && is_null($row->deleted_at)) {
                         $btn_edit = '<a data-toggle="tooltip" 
                                     href="' . route('tasks.edit', $row->id) . '" 
                                     class="btn btn-link btn-lg color-primary" 
@@ -101,7 +109,7 @@ class TaskController extends Controller
                     }
                     return $btn_view . $btn_edit . $btn_del;
                 })
-                ->rawColumns(['category_id', 'title', 'priority', 'deleted_at', 'action'])
+                ->rawColumns(['category_id', 'title', 'assigned_to', 'status',  'priority', 'deleted_at', 'action'])
                 ->make(true);
         }
 
@@ -218,6 +226,11 @@ class TaskController extends Controller
                 $updated_priority = false,
                 $updated_status = true
             ));
+
+            if ($task->status == TaskStatus::ARCHIVED) {
+                $task->active = 0;
+                $task->save();
+            }
         }
 
         // Redirect the Task to the Task's profile page
@@ -275,21 +288,23 @@ class TaskController extends Controller
                 $uniqueHash = Str::random(10);
                 $name = $file->getClientOriginalName();
                 // $formattedTime = now()->format('Y-m-d H:i:s');
-                $fileName = 'attachments/' . $uniqueHash . '_' . $file->getClientOriginalName();
+                $fileName = $uniqueHash . '_' . $file->getClientOriginalName();
+                $dbName = 'attachments/' . $fileName;
 
+                // Store the file in a folder 
                 Storage::disk('public')->setVisibility($fileName, 'public');
-                // Store the file in a folder and save its record in the database
                 $file->storeAs('attachments', $fileName, 'public');
 
                 $attachments[] = [
                     'task_id' => $task->id, // Make sure to set the task ID accordingly
                     'name' => $name,
-                    'file_name' => $fileName,
+                    'file_name' => $dbName,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
             }
 
+            // Save its record in the database
             TaskAttachment::insert($attachments);
         }
 
