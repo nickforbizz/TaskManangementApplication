@@ -53,7 +53,7 @@ class TaskAssigneeNotification extends Notification
         return [
             'name' => $this->task->title,
             'email' => $this->task->assignee->email,
-            'message' => "Task number {$this->task->id} has been reassigned to {$this->task->assignee->email}",
+            'message' => "Task number {$this->task->id} has been reassigned to you",
         ];
     }
 }

@@ -63,9 +63,9 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="nav navbar-nav ml-auto">
                         @if(Route::is('wellcome'))  
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown mr-3">
                             <a class="nav-link dropdown-toggle scroll-nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Services
+                                Services <i class="fa fa-caret"></i>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#about">About</a>
@@ -85,6 +85,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link scroll-nav-link" href="#support">Support</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link scroll-nav-link" href="{{ url('login') }}">Login</a>
                         </li>
                     </ul>
                 </div>

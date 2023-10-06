@@ -50,11 +50,12 @@
                                     <th>#</th>
                                     <th>Category</th>
                                     <th>Title</th>
+                                    <th>Assigned</th>
                                     <th>Due Date</th>
                                     <th>Completed Date</th>
                                     <th>Priority</th>
-                                    <th>Status</th>
                                     <th>Deleted At</th>
+                                    <th>Status</th>
                                     <th style="width: 10%">Action</th>
                                 </tr>
                             </thead>
@@ -94,7 +95,10 @@
                 },
                 {
                     data: 'title'
-                },					
+                },	
+                {
+                    data: 'assigned_to'
+                },				
                 {
                     data: 'due_date',
                 },						

@@ -61,6 +61,7 @@ class Task extends Model
 		'assigned_to' => 'int',
 		'created_by' => 'int',
 		'category_id' => 'int',
+		'active' => 'int',
 		'status' => TaskStatus::class,
 		'priority' => TaskPriority::class,
 	];
