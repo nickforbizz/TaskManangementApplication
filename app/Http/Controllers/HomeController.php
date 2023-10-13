@@ -25,10 +25,10 @@ class HomeController extends Controller
     public function index()
     {
 
-        // Cache::put('name', auth()->user(), 1000);
-        // dd(
-        //     Cache::get('name')
-        // );
+        Cache::put('name', auth()->user(), 1000);
+        dd(
+            Cache::get('name')
+        );
         return view('home');
     }
 

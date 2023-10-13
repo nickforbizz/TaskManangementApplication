@@ -5,17 +5,11 @@
     <div class="row justify-content-center">
 
 
-        <div class="col-6" 
-            style="background-image: url('{{ asset('assets/frontend/img/heroimg.png') }}');
-                background-size:contain;
-                background-repeat: no-repeat;">
-            
-        </div>
 
 
-        <div class="col-6">
+        <div class="col-md-6 col-md-offset-3">
             <div class="card" style="max-height:70vh">
-                <div class="card-header"> <h3 class="text-muted">{{ __('Login') }}</h3></div>
+                <div class="card-header bg-primary"> <h3 class="text-muted text-center text-white">{{ __('Login') }}</h3></div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
