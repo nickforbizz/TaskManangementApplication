@@ -22,6 +22,7 @@
 <link href="{{ asset('assets/frontend/css/style.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/frontend/css/aos.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/frontend/css/colors/color-blue.css') }}" rel="stylesheet" id="color_theme" type="text/css" />
+<link href="{{ asset('assets/frontend/css/main.css') }}" rel="stylesheet" type="text/css" />
 
 <!-- Google fonts -->
 <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,500,600,700" rel="stylesheet"> 

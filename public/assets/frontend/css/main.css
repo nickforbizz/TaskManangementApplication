@@ -1,0 +1,43 @@
+:root {
+    --main-color: #ecb62c;
+    --secondary-color: #f59621;
+    --light-color: #fff;
+    --tertiary-color: #a4905a;
+}
+
+/*  *************************************************************************
+    ********************** THEME COLORS SETUP *******************************
+    ************************************************************************ */
+.tertiary-color {
+    background-color: var(--main-color); /* Your base color */
+    /* Adjust the red and green channels to create a brownish tertiary color */
+    /* These values are just for illustration; you can experiment with them */
+    mix-blend-mode: multiply;
+    filter: saturate(50%) brightness(80%);
+}
+
+.logo, .text-white {
+    color: var(--light-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--main-color) !important;
+}
+
+.color-primary {
+    color: var(--main-color) !important;
+}
+
+.btn-primary {
+    background-color: var(--main-color) !important;
+    border-color: var(--main-color) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--tertiary-color) !important;
+    border-color: var(--main-color) !important;
+}
+
+/*  *************************************************************************
+    ********************** END OF BEFORELOAD SETUP ************************
+    ************************************************************************ */

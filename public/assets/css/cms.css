@@ -9,13 +9,13 @@
 /*  *************************************************************************
     ********************** THEME COLORS SETUP *******************************
     ************************************************************************ */
-    .tertiary-color {
-        background-color: var(--main-color); /* Your base color */
-        /* Adjust the red and green channels to create a brownish tertiary color */
-        /* These values are just for illustration; you can experiment with them */
-        mix-blend-mode: multiply;
-        filter: saturate(50%) brightness(80%);
-      }
+.tertiary-color {
+    background-color: var(--main-color); /* Your base color */
+    /* Adjust the red and green channels to create a brownish tertiary color */
+    /* These values are just for illustration; you can experiment with them */
+    mix-blend-mode: multiply;
+    filter: saturate(50%) brightness(80%);
+  }
       
 
 .logo{
