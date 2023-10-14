@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -40,6 +42,22 @@ class HomeController extends Controller
      */
     public function cms()
     {
-        return view('cms.index');
+        $data = $this->userStatistics();
+
+        return view('cms.index', compact('data'));
+    }
+
+    /**
+     * Get User Statistics
+     *
+     * @return void
+     */
+    protected function userStatistics()
+    {
+        $data = User::select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as user_count'))
+            ->groupBy('date')
+            ->get();
+
+        return $data;
     }
 }
