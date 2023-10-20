@@ -27,5 +27,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          server-dir: /
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ftps
+          log-level: standard
+          timeout: ${{ vars.DEPLOY_TIMEOUT }}
