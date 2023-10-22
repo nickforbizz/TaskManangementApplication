@@ -74,5 +74,8 @@ class AdminSeeder extends Seeder
         ]);
 
         $user->assignRole('user');
+
+        // other Users
+        User::factory()->count(236)->create();
     }
 }

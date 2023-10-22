@@ -2,6 +2,7 @@
 
 use App\Events\UserRegistered;
 use App\Http\Controllers\cms\AssignRoleController;
+use App\Http\Controllers\cms\GroupController;
 use App\Http\Controllers\cms\NotificationController;
 use App\Http\Controllers\cms\PermissionController;
 use App\Http\Controllers\cms\UserController;
@@ -101,6 +102,7 @@ Route::middleware('cms')->group(function () {
         // 'assignRoles' => AssignRoleController::class,
         'reports' => ReportController::class,
         'notifications' => NotificationController::class,
+        'groups' => GroupController::class,
     ]);
 
  
