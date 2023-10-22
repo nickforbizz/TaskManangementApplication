@@ -87,22 +87,7 @@
                             <img id="blah" src="#" alt="your image" height="50px"/>
                         </div>
 
-                        
-                        <!-- <div class="form-group form-floating-label">
-                            <input id="password" type="password" class="form-control input-border-bottom" name="password" required="true" />
-                            <label for="password" class="placeholder"> Password</label>
-                            @error('password') <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        
-                        <div class="form-group form-floating-label">
-                            <input id="password_confirmation" type="password" class="form-control input-border-bottom" name="password_confirmation" required="true" />
-                            <label for="password_confirmation" class="placeholder">Confirm Password</label>
-                            @error('password_confirmation') <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div> -->
-
-
+                    
                         <div class="form-group">
                             <label for="role"> Roles </label>
                             <select name="roles[]" id="role" multiple="multiple" class="form-control form-control select2">
@@ -113,6 +98,19 @@
                                 @endforelse
                             </select>
                             @error('roles') <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="group"> Groups </label>
+                            <select name="groups[]" id="group" multiple="multiple" class="form-control form-control select2">
+                                @forelse($groups as $group)
+                                    <option value="{{ $group->id }}" @if(isset($user) && $user->isInGroup($group->id)) selected @endif > {{ $group->name }} </option>
+                                @empty
+                                    <option selected disabled> -- No item -- </option> 
+                                @endforelse
+                            </select>
+                            @error('groups') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 

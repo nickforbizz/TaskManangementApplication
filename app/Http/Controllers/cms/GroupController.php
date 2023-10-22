@@ -9,7 +9,7 @@ use App\Models\Group;
 
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
-
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use DataTables;
@@ -51,7 +51,7 @@ class GroupController extends Controller
                     $btn_edit = $btn_del = null;
                     if (auth()->user()->hasAnyRole('superadmin|admin|editor') ) {
                         $btn_edit = '<a data-toggle="tooltip" 
-                                        href="' . route('postCategories.edit', $row->id) . '" 
+                                        href="' . route('groups.edit', $row->id) . '" 
                                         class="btn btn-link btn-lg color-primary" 
                                         data-original-title="Edit Record">
                                     <i class="fa fa-edit"></i>
@@ -63,7 +63,7 @@ class GroupController extends Controller
                                     data-toggle="tooltip" 
                                     title="" 
                                     class="btn btn-link btn-danger" 
-                                    onclick="delRecord(`' . $row->id . '`, `' . route('postCategories.destroy', $row->id) . '`, `#tb_postCategories`)"
+                                    onclick="delRecord(`' . $row->id . '`, `' . route('groups.destroy', $row->id) . '`, `#tb_groups`)"
                                     data-original-title="Remove">
                                 <i class="fa fa-trash"></i>
                             </button>';
@@ -75,7 +75,7 @@ class GroupController extends Controller
         }
 
         // render view
-        return view('cms.postCategories.index');
+        return view('cms.groups.index');
     }
 
     /**
@@ -83,7 +83,8 @@ class GroupController extends Controller
      */
     public function create()
     {
-        return view('cms.groups.create');
+        $users = User::where('active', 1)->with('groups')->get();
+        return view('cms.groups.create', compact( 'users'));
     }
 
     /**
@@ -91,7 +92,8 @@ class GroupController extends Controller
      */
     public function store(StoreGroupRequest $request)
     {
-        Group::create($request->validated());
+        $group = Group::create($request->validated());
+        $group->users()->attach($request->users);
         return redirect()->back()->with('success', 'Record Created Successfully');
     }
 
@@ -109,16 +111,20 @@ class GroupController extends Controller
      */
     public function edit(Group $group)
     {
-        return view('cms.groups.create', compact('group'));
+        $users = User::where('active', 1)->with('groups')->get();
+        return view('cms.groups.create', compact('group', 'users'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateGroupRequest $request, Group $Group)
+    public function update(UpdateGroupRequest $request, Group $group)
     {
-
-        $Group->update($request->all());
+        $group->update($request->validated());
+        $group = Group::find($group->id);
+        $selected_users =  array_map('intval', $request->users);
+        $group->users()->detach(); 
+        $group->users()->attach($selected_users);
 
         // Redirect the user to the user's profile page
         return redirect()

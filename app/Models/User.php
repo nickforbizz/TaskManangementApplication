@@ -90,8 +90,13 @@ class User extends Authenticatable
 
 	public function groups()
 	{
-		return $this->belongsToMany(Group::class);
+		return $this->belongsToMany(Group::class, 'user_group');
 	}
+
+	public function isInGroup($groupId)
+    {
+        return $this->groups->contains('id', $groupId);
+    }
 
 
 	/**

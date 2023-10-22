@@ -10,9 +10,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Group;
 use App\Models\ModelHasRole;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\UserGroup;
 use App\Notifications\WelcomeEmailNotification;
 use DataTables;
 use Illuminate\Support\Facades\Storage;
@@ -81,8 +83,9 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
+        $groups = Group::all();
         // $permissions = Permissions::all();
-        return view('cms.users.create', compact('roles'));
+        return view('cms.users.create', compact('roles', 'groups'));
     }
 
     /**
@@ -99,6 +102,11 @@ class UserController extends Controller
 
         if (!empty($request->roles)) {
             $user->assignRole($request->roles);
+        }
+
+        if (!empty($request->groups)) {
+            $user->groups()->sync($request->groups);
+            
         }
 
         return redirect()
@@ -121,7 +129,8 @@ class UserController extends Controller
     {
 
         $roles = Role::all();
-        return view('cms.users.create', compact('user', 'roles'));
+        $groups = Group::all();
+        return view('cms.users.create', compact('user', 'roles', 'groups'));
     }
 
     /**
@@ -142,6 +151,15 @@ class UserController extends Controller
         if (!empty($request->roles)) {
             ModelHasRole::where('model_id', $user->id)->delete();
             $user->assignRole($request->roles);
+        }
+
+        if (!empty($request->groups)) {
+            foreach($request->groups as $groupId){
+                $group = Group::find($groupId);
+                if(!$group) continue;
+                $group->users()->detach([$user->id]); 
+                $group->users()->attach($user->id);
+            }
         }
         
 
