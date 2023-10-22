@@ -16,6 +16,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 /**
  * Class User
  * 
@@ -86,14 +87,23 @@ class User extends Authenticatable
 		return $this->hasMany(Post::class, 'created_by');
 	}
 
-	
 
-	/**
-     * Hash the password before saving the user record.
-     */
-    public function setPasswordAttribute($password)
-    {   
-        $this->attributes['password'] = bcrypt($password);
+	public function groups()
+	{
+		return $this->belongsToMany(Group::class, 'user_group');
+	}
+
+	public function isInGroup($groupId)
+    {
+        return $this->groups->contains('id', $groupId);
     }
 
+
+	/**
+	 * Hash the password before saving the user record.
+	 */
+	public function setPasswordAttribute($password)
+	{
+		$this->attributes['password'] = bcrypt($password);
+	}
 }
