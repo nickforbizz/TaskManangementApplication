@@ -21,6 +21,8 @@ class CreatePostCategoriesTable extends Migration
             $table->text('description')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');
+            $table->unsignedBigInteger('fk_group');
+            $table->foreign('fk_group')->references('id')->on('groups');
             $table->boolean('active')->default(1);
             $table->softDeletes();
             $table->timestamps();

@@ -8,7 +8,6 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -16,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class Post
  * 
  * @property int $id
+ * @property int|null $fk_group
  * @property string $title
  * @property string $slug
  * @property string $content
@@ -30,21 +30,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 
  * @property PostCategory $post_category
  * @property User $user
+ * @property Group|null $group
  * @property Collection|Comment[] $comments
  *
  * @package App\Models
  */
 class Post extends Model
 {
-	use SoftDeletes, HasFactory;
+	use SoftDeletes;
 	protected $table = 'posts';
 
 	protected $casts = [
+		'fk_group' => 'int',
 		'created_by' => 'int',
 		'category_id' => 'int'
 	];
 
 	protected $fillable = [
+		'fk_group',
 		'title',
 		'slug',
 		'content',
@@ -63,6 +66,11 @@ class Post extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'created_by');
+	}
+
+	public function group()
+	{
+		return $this->belongsTo(Group::class, 'fk_group');
 	}
 
 	public function comments()
