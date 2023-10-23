@@ -18,6 +18,8 @@ class CreatePostsTable extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('post_categories');
+            $table->unsignedBigInteger('fk_group');
+            $table->foreign('fk_group')->references('id')->on('groups');
             $table->boolean('active')->default(1);
             $table->string('status')->default(1)->comment('1.)Draft 2.)Published 3.)Archived');
             $table->softDeletes();

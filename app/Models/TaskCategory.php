@@ -8,14 +8,14 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class ProductCategory
+ * Class TaskCategory
  * 
  * @property int $id
+ * @property int|null $fk_group
  * @property string $name
  * @property string $slug
  * @property string|null $description
@@ -26,20 +26,23 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $updated_at
  * 
  * @property User $user
+ * @property Group|null $group
  * @property Collection|Task[] $tasks
  *
  * @package App\Models
  */
 class TaskCategory extends Model
 {
-	use SoftDeletes, HasFactory;
+	use SoftDeletes;
 	protected $table = 'task_categories';
 
 	protected $casts = [
+		'fk_group' => 'int',
 		'created_by' => 'int'
 	];
 
 	protected $fillable = [
+		'fk_group',
 		'name',
 		'slug',
 		'description',
@@ -50,6 +53,11 @@ class TaskCategory extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'created_by');
+	}
+
+	public function group()
+	{
+		return $this->belongsTo(Group::class, 'fk_group');
 	}
 
 	public function tasks()

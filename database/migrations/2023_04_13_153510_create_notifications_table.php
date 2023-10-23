@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('type');
             $table->morphs('notifiable');
             $table->text('data');
+            $table->unsignedBigInteger('fk_group');
+            $table->foreign('fk_group')->references('id')->on('groups');
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
