@@ -31,22 +31,12 @@ class TaskController extends Controller
             $data = Task::orderBy('created_at', 'desc')
                             ->with('task_category');
 
-            // Use the withTrashed method to include soft-deleted records
-            $data = $data->withTrashed();
-
-            // Filter soft-deleted items
-            if ($request->has('trash_filter')) {
-                if ((int) $request->trash_filter === 1) {
-                    $data->whereNull('deleted_at');
-                } elseif ((int) $request->trash_filter === 2) {
-                    $data->whereNotNull('deleted_at');
-                }
-            }
-
             if (!auth()->user()->hasAnyRole('superadmin|admin')) {
                 $data->where('assigned_to', auth()->id())
                 ->orWhere('created_by', auth()->id());
             }
+
+            $data = GlobalHelper::dataWithFilters($request, $data);
 
             $data = $data->get();
 
@@ -69,7 +59,7 @@ class TaskController extends Controller
                     return Str::limit($row->title, 10, '...');
                 })
                 ->editColumn('assigned_to', function ($row) {
-                    return str_replace('@admin.com', '', $row->assignee->email);
+                    return  explode('@', $row->user->email)[0];
                 })
                 ->editColumn('priority', function ($row) {
                     return $row->priority->getLabelText();
@@ -116,6 +106,9 @@ class TaskController extends Controller
         // render view
         return view('cms.tasks.index');
     }
+
+
+    
 
     /**
      * Show the form for creating a new resource.
