@@ -6,6 +6,8 @@
 
 namespace App\Models;
 
+use App\Enums\TaskPriority;
+use App\Enums\TaskStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -45,13 +47,14 @@ class Task extends Model
 
 	protected $casts = [
 		'fk_group' => 'int',
-		'priority' => 'int',
 		'due_date' => 'date',
 		'completion_date' => 'date',
 		'assigned_to' => 'int',
 		'created_by' => 'int',
 		'category_id' => 'int',
-		'active' => 'bool'
+		'active' => 'bool',
+		'status' => TaskStatus::class,
+		'priority' => TaskPriority::class,
 	];
 
 	protected $fillable = [
@@ -68,6 +71,8 @@ class Task extends Model
 		'active',
 		'status'
 	];
+
+
 
 	public function user()
 	{

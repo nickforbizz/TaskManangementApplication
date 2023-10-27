@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\cms;
 
+use App\Helpers\GlobalHelper;
 use App\Http\Controllers\Controller;
 
 use App\Models\PostCategory;
@@ -25,19 +26,10 @@ class PostCategoryController extends Controller
             // return datatable of the makes available
             $data = PostCategory::orderBy('created_at', 'desc');
     
-            // Use the withTrashed method to include soft-deleted records
-            $data = $data->withTrashed();
-    
             // Filter soft-deleted items
-            if ($request->has('trash_filter')) {
-                if ((int) $request->trash_filter === 1) {
-                    $data->whereNull('deleted_at');
-                }elseif ((int) $request->trash_filter === 2) {
-                    $data->whereNotNull('deleted_at');
-                }
-            }
+            $data = GlobalHelper::dataWithFilters($request, $data);
 
-            
+            $data = $data->where('fk_group', )
             $data = $data->get();
             return Datatables::of($data)
                 ->addIndexColumn()
