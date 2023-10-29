@@ -29,7 +29,7 @@ class PostCategoryController extends Controller
             // Filter soft-deleted items
             $data = GlobalHelper::dataWithFilters($request, $data);
 
-            $data = $data->where('fk_group', )
+            // $data = $data->where('fk_group', )
             $data = $data->get();
             return Datatables::of($data)
                 ->addIndexColumn()

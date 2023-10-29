@@ -39,6 +39,7 @@ class TaskController extends Controller
             $data = GlobalHelper::dataWithFilters($request, $data);
 
             $data = $data->get();
+            
 
 
             return Datatables::of($data)
