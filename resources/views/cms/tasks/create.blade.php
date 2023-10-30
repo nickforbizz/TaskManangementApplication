@@ -155,18 +155,20 @@
 
                             <div class="col-lg-12 Xform-group">
                                 @if(isset($task->created_by))
-                                @forelse($task->attachments as $attachment)
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                    <a href="{{ asset('storage/'.$attachment->file_name) }}" class="mr-2" target="_blank">
-                                        <strong>{{ $attachment->name }} </strong>
-                                    </a>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top:0!important" onclick="deleteAttachment({{ $attachment->id }})">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                @empty
-                                <div class="alert alert-info">No attachments for this task</div>
-                                @endforelse
+                                    @if(!is_null($task->attachments))
+                                    @forelse($task->attachments as $attachment)
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        <a href="{{ asset('storage/'.$attachment->file_name) }}" class="mr-2" target="_blank">
+                                            <strong>{{ $attachment->name }} </strong>
+                                        </a>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top:0!important" onclick="deleteAttachment({{ $attachment->id }})">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    @empty
+                                    <div class="alert alert-info">No attachments for this task</div>
+                                    @endforelse
+                                    @endif
                                 @endif
                             </div>
                         </div>

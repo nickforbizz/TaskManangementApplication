@@ -80,6 +80,11 @@ class Task extends Model
 		return $this->belongsTo(User::class, 'created_by');
 	}
 
+	public function assignee()
+	{
+		return $this->belongsTo(User::class, 'assigned_to');
+	}
+
 	public function task_category()
 	{
 		return $this->belongsTo(TaskCategory::class, 'category_id');

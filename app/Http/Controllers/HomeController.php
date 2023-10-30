@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feed;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -43,8 +45,15 @@ class HomeController extends Controller
     public function cms()
     {
         $data = $this->userStatistics();
-
-        return view('cms.index', compact('data'));
+        $tasks = Task::orderBy('created_at', 'desc')
+                        ->with('task_category')->where('assigned_to', auth()->id())
+                        ->orWhere('created_by', auth()->id())
+                        ->take(4)->get();
+        $feeds = Feed::orderBy('created_at', 'desc')
+                        ->with('user')
+                        ->take(6)->get();
+                        // dd($feeds);
+        return view('cms.index', compact('data', 'tasks', 'feeds'));
     }
 
     /**
