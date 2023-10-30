@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('feeds', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('fk_user');
             $table->text('title');
             $table->text('content');
             $table->boolean('active')->default(1);
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('fk_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
