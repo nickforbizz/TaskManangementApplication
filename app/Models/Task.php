@@ -10,6 +10,7 @@ use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -42,7 +43,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Task extends Model
 {
-	use SoftDeletes;
+	use SoftDeletes,  HasFactory;
 	protected $table = 'tasks';
 
 	protected $casts = [
@@ -77,6 +78,11 @@ class Task extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'created_by');
+	}
+
+	public function assignee()
+	{
+		return $this->belongsTo(User::class, 'assigned_to');
 	}
 
 	public function task_category()
