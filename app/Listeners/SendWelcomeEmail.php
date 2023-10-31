@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UserRegistered;
+use App\Models\Feed;
 use App\Models\User;
 use App\Notifications\NewUserNotification;
 use App\Notifications\WelcomeEmailNotification;
@@ -33,5 +34,12 @@ class SendWelcomeEmail
         })->get();
 
         Notification::send($admins, new NewUserNotification($event->user));
+
+        // add Feed
+        Feed::create([
+            'fk_user' => auth()->id(),
+            'title' => 'User Registration',
+            'content' => 'User '.$event->user->email.' has been registered to the application by '.auth()->user()->email
+        ]);
     }
 }
