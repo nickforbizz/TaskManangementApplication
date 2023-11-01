@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\cms;
 
+use App\Events\TaskCategoryCreatedEvent;
 use App\Helpers\GlobalHelper;
 use App\Http\Controllers\Controller;
 use App\Models\TaskCategory;
@@ -87,7 +88,12 @@ class TaskCategoryController extends Controller
      */
     public function store(StoreTaskCategoryRequest $request)
     {
-        TaskCategory::create($request->validated());
+        $task_category = TaskCategory::create($request->validated());
+
+        if ($task_category) {
+            event(new TaskCategoryCreatedEvent($task_category));
+        }
+        
         return redirect()
             ->route('taskCategories.index')
             ->with('success', 'Record created successfully!');
