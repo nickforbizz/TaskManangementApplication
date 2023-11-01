@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\cms;
 
+use App\Events\PostCategoryCreatedEvent;
 use App\Helpers\GlobalHelper;
 use App\Http\Controllers\Controller;
 
@@ -86,7 +87,12 @@ class PostCategoryController extends Controller
      */
     public function store(StorePostCategoryRequest $request)
     {
-        PostCategory::create($request->all());
+        $post_category = PostCategory::create($request->all());
+
+        if ($post_category) {
+            event(new PostCategoryCreatedEvent($post_category));
+        }
+
         return redirect()->back()->with('success', 'Record Created Successfully');
     }
 

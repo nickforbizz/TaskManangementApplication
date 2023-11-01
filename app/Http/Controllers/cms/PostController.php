@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\cms;
 
+use App\Events\PostCreatedEvent;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -103,6 +104,8 @@ class PostController extends Controller
         $post = Post::create($request->all());
 
         if ($post) {
+            event(new PostCreatedEvent($post));
+        
             return redirect()
                 ->route('posts.index')
                 ->with('success', 'Record Created Successfully');

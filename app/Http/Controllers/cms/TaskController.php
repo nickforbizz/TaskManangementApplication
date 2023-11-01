@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\cms;
 
 use App\Enums\TaskStatus;
+use App\Events\TaskCreatedEvent;
 use App\Events\TaskUpserted;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -145,6 +146,8 @@ class TaskController extends Controller
                 $updated_priority = false,
                 $updated_status = false
             ));
+
+            event(new TaskCreatedEvent($task));
 
             return redirect()
                 ->route('tasks.index')
