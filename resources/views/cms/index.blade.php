@@ -34,11 +34,11 @@
 						</div>
 						<div class="px-2 pb-2 pb-md-0 text-center">
 							<div id="circles-2"></div>
-							<h6 class="fw-bold mt-3 mb-0">Tasks</h6>
+							<h6 class="fw-bold mt-3 mb-0">My Tasks</h6>
 						</div>
 						<div class="px-2 pb-2 pb-md-0 text-center">
 							<div id="circles-3"></div>
-							<h6 class="fw-bold mt-3 mb-0">Posts</h6>
+							<h6 class="fw-bold mt-3 mb-0">My Posts</h6>
 						</div>
 					</div>
 				</div>
@@ -52,11 +52,11 @@
 						<div class="col-md-4 d-flex flex-column justify-content-around">
 							<div>
 								<h6 class="fw-bold text-uppercase text-success op-8">Total Tasks</h6>
-								<h3 class="fw-bold">82</h3>
+								<h3 class="fw-bold">{{ $total_active_tasks }}</h3>
 							</div>
 							<div>
 								<h6 class="fw-bold text-uppercase text-danger op-8">Total Completed</h6>
-								<h3 class="fw-bold">12</h3>
+								<h3 class="fw-bold">{{ $total_completed_tasks }}</h3>
 							</div>
 						</div>
 						<div class="col-md-8">
@@ -261,13 +261,22 @@
 @push('scripts')
 
 <script>
+	let total_active_users = @json($total_active_users);
+	let total_users = @json($total_users);
+
+	let user_tasks = @json($user_tasks);
+	let total_active_tasks = @json($total_active_tasks);
+
+	let user_posts = @json($user_posts);
+	let total_active_posts = @json($total_active_posts);
+
 	Circles.create({
 		id: 'circles-1',
 		radius: 45,
-		value: 60,
+		value: parseInt(total_active_users)/parseInt(total_users) *100,
 		maxValue: 100,
 		width: 7,
-		text: 5,
+		text: total_active_users,
 		colors: ['#f1f1f1', '#FF9E27'],
 		duration: 400,
 		wrpClass: 'circles-wrp',
@@ -279,10 +288,10 @@
 	Circles.create({
 		id: 'circles-2',
 		radius: 45,
-		value: 70,
+		value: parseInt(user_tasks)/parseInt(total_active_tasks) *100,
 		maxValue: 100,
 		width: 7,
-		text: 36,
+		text: parseInt(user_tasks),
 		colors: ['#f1f1f1', '#2BB930'],
 		duration: 400,
 		wrpClass: 'circles-wrp',
@@ -294,10 +303,10 @@
 	Circles.create({
 		id: 'circles-3',
 		radius: 45,
-		value: 40,
+		value: parseInt(user_posts)/parseInt(total_active_posts) *100,
 		maxValue: 100,
 		width: 7,
-		text: 12,
+		text: parseInt(user_posts),
 		colors: ['#f1f1f1', '#F25961'],
 		duration: 400,
 		wrpClass: 'circles-wrp',
