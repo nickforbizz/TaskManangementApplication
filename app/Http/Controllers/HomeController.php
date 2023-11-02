@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feed;
+use App\Models\Post;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -48,12 +49,27 @@ class HomeController extends Controller
         $tasks = Task::orderBy('created_at', 'desc')
                         ->with('task_category')->where('assigned_to', auth()->id())
                         ->orWhere('created_by', auth()->id())
-                        ->take(4)->get();
+                        ->get();
         $feeds = Feed::orderBy('created_at', 'desc')
                         ->with('user')
                         ->take(6)->get();
-                        // dd($feeds);
-        return view('cms.index', compact('data', 'tasks', 'feeds'));
+                        // dd($feeds); 
+
+        // counts
+        $total_active_users = User::where('active', 1)->count();
+        $total_users = User::count();
+
+        $total_active_tasks = Task::where('active', 1)->count();
+        $total_completed_tasks = Task::where('active', 1)->where('status', 3)->count();
+        $user_tasks = $tasks->count();
+        $tasks = $tasks->take(4);
+        
+        $total_active_posts = Post::where('active', 1)->count();
+        $user_posts = Post::where('active', 1)->where('created_by', auth()->id())->count();
+
+        return view('cms.index', 
+                compact('data', 'tasks', 'feeds', 'total_active_users', 'total_users', 'total_active_tasks', 
+                'total_completed_tasks', 'user_tasks', 'total_active_posts', 'user_posts'));
     }
 
     /**
