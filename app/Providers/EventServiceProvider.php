@@ -26,10 +26,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [SendEmailVerificationNotification::class],
         UserRegistered::class =>  [SendWelcomeEmail::class],
-        PostCategoryCreatedEvent::class =>  [PostCategoryCreatedListener::class],
-        PostCreatedEvent::class =>  [PostCreatedListener::class],
-        TaskCategoryCreatedEvent::class =>  [TaskCategoryCreatedListener::class],
-        TaskCreatedEvent::class =>  [TaskCreatedListener::class],
+        // PostCategoryCreatedEvent::class =>  [PostCategoryCreatedListener::class],
+        // PostCreatedEvent::class =>  [PostCreatedListener::class],
+        // TaskCategoryCreatedEvent::class =>  [TaskCategoryCreatedListener::class],
+        // TaskCreatedEvent::class =>  [TaskCreatedListener::class],
     ];
 
     /**
