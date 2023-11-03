@@ -27,7 +27,7 @@ class TaskCategoryCreatedListener
         // add Feed
         Feed::create([
             'fk_user' => auth()->id(),
-            'title' => 'New Task Category Created',
+            'title' => 'New Task Category: "'.$event->task_category->name.'"',
             'content' => 'Task Category: '.$event->task_category->name.' has been created by '.auth()->user()->email
         ]);
     }

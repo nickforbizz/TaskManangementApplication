@@ -27,7 +27,7 @@ class TaskCreatedListener
         // add Feed
         Feed::create([
             'fk_user' => auth()->id(),
-            'title' => 'New Task Created',
+            'title' => 'New Task : "'.$event->task->title.'"',
             'content' => 'Task '.$event->task->title.' has been created by '.auth()->user()->email
         ]);
     }

@@ -27,7 +27,7 @@ class PostCreatedListener
         // add Feed
         Feed::create([
             'fk_user' => auth()->id(),
-            'title' => 'New Post Created',
+            'title' => 'New Post: "'.$event->post->title.'"',
             'content' => 'Post '.$event->post->title.' has been created by '.auth()->user()->email
         ]);
     }
