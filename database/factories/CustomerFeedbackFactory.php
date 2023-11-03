@@ -6,9 +6,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Feed>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CustomerFeedback>
  */
-class FeedFactory extends Factory
+class CustomerFeedbackFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,11 +18,12 @@ class FeedFactory extends Factory
     public function definition(): array
     {
         $users = User::all();
-        $name = $this->faker->unique()->word;
+        $name = $this->faker->word;
 
         return [
             'title' => $name,
             'content' => $this->faker->sentence,
+            'status' => $this->faker->randomElement([1,2,3,4,5]),
             'active' => $this->faker->randomElement([1,0]),
             'fk_user' => $this->faker->randomElement($users)
         ];

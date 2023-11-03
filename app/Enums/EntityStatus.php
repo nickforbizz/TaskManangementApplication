@@ -1,7 +1,7 @@
 <?php
 namespace App\Enums;
 
-enum TaskStatus: int  {
+enum EntityStatus: int  {
     case TODO = 1;
     case IN_PROGRESS = 2;
     case COMPLETED = 3;
