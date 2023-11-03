@@ -6,8 +6,8 @@
 
 namespace App\Models;
 
-use App\Enums\TaskPriority;
-use App\Enums\TaskStatus;
+use App\Enums\EntityPriority;
+use App\Enums\EntityStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,8 +54,8 @@ class Task extends Model
 		'created_by' => 'int',
 		'category_id' => 'int',
 		'active' => 'bool',
-		'status' => TaskStatus::class,
-		'priority' => TaskPriority::class,
+		'status' => EntityStatus::class,
+		'priority' => EntityPriority::class,
 	];
 
 	protected $fillable = [

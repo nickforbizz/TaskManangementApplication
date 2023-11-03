@@ -2,6 +2,8 @@
 
 use App\Events\UserRegistered;
 use App\Http\Controllers\cms\AssignRoleController;
+use App\Http\Controllers\cms\CustomerFeedbackController;
+use App\Http\Controllers\cms\FeedController;
 use App\Http\Controllers\cms\GroupController;
 use App\Http\Controllers\cms\NotificationController;
 use App\Http\Controllers\cms\PermissionController;
@@ -103,6 +105,8 @@ Route::middleware('cms')->group(function () {
         'reports' => ReportController::class,
         'notifications' => NotificationController::class,
         'groups' => GroupController::class,
+        'feeds' => FeedController::class,
+        'customerFeedback' => CustomerFeedbackController::class,
     ]);
 
  
