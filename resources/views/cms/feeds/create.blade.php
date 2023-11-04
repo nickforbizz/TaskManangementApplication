@@ -3,7 +3,7 @@
 @section('content')
 <div class="page-inner">
     <div class="page-header">
-        <h4 class="page-title"> Task Categories </h4>
+        <h4 class="page-title"> Feeds </h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
                 <a href="{{ route('cms') }}">
@@ -14,7 +14,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#">task Categories</a>
+                <a href="#">feeds</a>
             </li>
             <li class="separator">
                 <i class="flaticon-right-arrow"></i>
@@ -32,7 +32,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Add|Edit Record</h4>
-                        <a href="{{ route('taskCategories.index') }}" class="btn btn-primary btn-round ml-auto" >
+                        <a href="{{ route('feeds.index') }}" class="btn btn-primary btn-round ml-auto" >
                             <i class="flaticon-left-arrow-4 mr-2"></i>
                             View Records
                         </a> 
@@ -42,33 +42,33 @@
 
                     <!-- form -->
                     @include('cms.helpers.partials.feedback') 
-                    <form id="taskCategories-create" 
-                            action="@if(isset($taskCategory->id))  
-                            {{ route('taskCategories.update', ['taskCategory' => $taskCategory->id]) }}
-                            @else {{ route('taskCategories.store' ) }} @endif"  
+                    <form id="feeds-create" 
+                            action="@if(isset($feed->id))  
+                            {{ route('feeds.update', ['feed' => $feed->id]) }}
+                            @else {{ route('feeds.store' ) }} @endif"  
                             method="post" 
                             enctype="multipart/form-data">
 
                         @csrf
-                        @if(isset($taskCategory->id))
+                        @if(isset($feed->id))
                             @method('PUT')
-                            <input type="hidden" name="created_by" value="{{ auth()->id() }}">
+                            <input type="hidden" name="fk_user" value="{{ auth()->id() }}">
                         @endif
 
 
-                        <div class="form-group">
+                        <div class="form-group ">
                             
-                            <label for="name" class="placeholder"> Name</label>
-                            <input id="name" type="text" class="form-control  @error('name') is-invalid @enderror" name="name"  value="{{ $taskCategory->name ?? '' }}" required />
-                            @error('name') <span class="text-danger">{{ $message }}</span>
+                            <label for="title" class="placeholder"> Title </label>
+                            <input id="title" type="text" class="form-control  @error('title') is-invalid @enderror" name="title"  value="{{ $feed->title ?? '' }}" required />
+                            @error('title') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group ">
                             <label for="description" class="placeholder"> Description</label>
-                            <textarea name="description" id="description" class="form-control " >{{ $taskCategory->description ?? '' }}
+                            <textarea name="content" id="description" class="form-control" >{{ $feed->content ?? '' }}
                             </textarea>
-                            @error('description') <span class="text-danger">{{ $message }}</span>
+                            @error('content') <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
