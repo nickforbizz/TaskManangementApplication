@@ -91,7 +91,7 @@ class TaskCategoryController extends Controller
         $task_category = TaskCategory::create($request->validated());
 
         if ($task_category) {
-            event(new TaskCategoryCreatedEvent($task_category));
+            event(new TaskCategoryCreatedEvent($task_category)); 
         }
         
         return redirect()

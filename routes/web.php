@@ -106,7 +106,7 @@ Route::middleware('cms')->group(function () {
         'notifications' => NotificationController::class,
         'groups' => GroupController::class,
         'feeds' => FeedController::class,
-        'customerFeedback' => CustomerFeedbackController::class,
+        'customerFeedbacks' => CustomerFeedbackController::class,
     ]);
 
  
