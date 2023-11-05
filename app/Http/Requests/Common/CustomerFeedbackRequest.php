@@ -5,7 +5,7 @@ namespace App\Http\Requests\Common;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class FeedRequest extends FormRequest
+class CustomerFeedbackRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class FeedRequest extends FormRequest
     public function authorize(): bool
     {
         $user = auth()->user();
-        return $user->hasAnyRole(['superadmin']);
+        return $user->hasAnyRole(['superadmin', 'admin']);
     }
 
     /**
@@ -28,7 +28,7 @@ class FeedRequest extends FormRequest
                 'required', 
                 'min:2', 
                 'max:255',
-                Rule::unique('feeds')->ignore($this->feed ?? null)
+                Rule::unique('customer_feedback')->ignore($this->customer_feedback ?? null)
             ],
             'content' => 'nullable',
             'fk_user' => 'required:users',
