@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CustomerFeedback;
 use App\Models\Feed;
 use App\Models\Post;
 use App\Models\Task;
@@ -47,13 +48,18 @@ class HomeController extends Controller
     {
         $data = $this->userStatistics();
         $tasks = Task::orderBy('created_at', 'desc')
-                        ->with('task_category')->where('assigned_to', auth()->id())
-                        ->orWhere('created_by', auth()->id())
-                        ->get();
+            ->with('task_category')->where('assigned_to', auth()->id())
+            ->orWhere('created_by', auth()->id())
+            ->get();
+
         $feeds = Feed::orderBy('created_at', 'desc')
-                        ->with('user')
-                        ->take(6)->get();
-                        // dd($feeds); 
+            ->with('user')
+            ->take(6)->get();
+
+        $feedbacks = CustomerFeedback::orderBy('created_at', 'desc')
+            ->with('user')
+            ->take(5)->get();
+        // dd($feeds); 
 
         // counts
         $total_active_users = User::where('active', 1)->count();
@@ -63,13 +69,26 @@ class HomeController extends Controller
         $total_completed_tasks = Task::where('active', 1)->where('status', 3)->count();
         $user_tasks = $tasks->count();
         $tasks = $tasks->take(4);
-        
+
         $total_active_posts = Post::where('active', 1)->count();
         $user_posts = Post::where('active', 1)->where('created_by', auth()->id())->count();
 
-        return view('cms.index', 
-                compact('data', 'tasks', 'feeds', 'total_active_users', 'total_users', 'total_active_tasks', 
-                'total_completed_tasks', 'user_tasks', 'total_active_posts', 'user_posts'));
+        return view(
+            'cms.index',
+            compact(
+                'data',
+                'tasks',
+                'feeds',
+                'feedbacks',
+                'total_active_users',
+                'total_users',
+                'total_active_tasks',
+                'total_completed_tasks',
+                'user_tasks',
+                'total_active_posts',
+                'user_posts'
+            )
+        );
     }
 
     /**

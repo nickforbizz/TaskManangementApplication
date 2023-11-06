@@ -93,28 +93,29 @@
 					</a>
 				</li>
 
-				<li class="nav-item @if(Route::is('feeds.*')) active @endif">
-					<a href="{{ route('feeds.index') }}">
-						<i class="far fa-edit"></i>
-						<p> Feeds</p>
-					</a>
-				</li>
-
+				
 				<li class="nav-item @if(Route::is('customerFeedbacks.*')) active @endif">
 					<a href="{{ route('customerFeedbacks.index') }}">
 						<i class="far fa-edit"></i>
 						<p> Customer Feedback </p>
 					</a>
 				</li>
-
+				
 				<li class="nav-item @if(Route::is('reports.*')) active @endif">
 					<a href="{{ route('reports.index') }}">
 						<i class="fas fa-chart-line"></i>
 						<p> Reports</p>
 					</a>
 				</li>
-
+				
 				@if(auth()->user()->hasAnyRole(['admin', 'superadmin']))
+				<li class="nav-item @if(Route::is('feeds.*')) active @endif">
+					<a href="{{ route('feeds.index') }}">
+						<i class="far fa-edit"></i>
+						<p> Feeds</p>
+					</a>
+				</li>
+				
 				<li class="nav-item @if(Route::is('roles.*') || 
 									Route::is('permissions.*') ||
 									 Route::is('notifications.*') ) active 
