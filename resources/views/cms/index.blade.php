@@ -38,7 +38,7 @@
 						</div>
 						<div class="px-2 pb-2 pb-md-0 text-center">
 							<div id="circles-3"></div>
-							<h6 class="fw-bold mt-3 mb-0">My Posts</h6>
+							<h6 class="fw-bold mt-3 mb-0">Feeds</h6>
 						</div>
 					</div>
 				</div>
@@ -233,8 +233,8 @@
 	let user_tasks = @json($user_tasks);
 	let total_active_tasks = @json($total_active_tasks);
 
-	let user_posts = @json($user_posts);
-	let total_active_posts = @json($total_active_posts);
+	let feeds_count = @json($feeds_count);
+	let feeds_total_count = @json($feeds_total_count);
 
 	Circles.create({
 		id: 'circles-1',
@@ -269,10 +269,10 @@
 	Circles.create({
 		id: 'circles-3',
 		radius: 45,
-		value: parseInt(user_posts)/parseInt(total_active_posts) *100,
+		value: parseInt(feeds_count)/parseInt(feeds_total_count) *100,
 		maxValue: 100,
 		width: 7,
-		text: parseInt(user_posts),
+		text: parseInt(feeds_count),
 		colors: ['#f1f1f1', '#F25961'],
 		duration: 400,
 		wrpClass: 'circles-wrp',
