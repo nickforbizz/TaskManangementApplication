@@ -56,6 +56,9 @@ class HomeController extends Controller
             ->with('user')
             ->take(6)->get();
 
+        $feeds_count = Feed::where('active', 1)->count();
+        $feeds_total_count = Feed::count();
+
         $feedbacks = CustomerFeedback::orderBy('created_at', 'desc')
             ->with('user')
             ->take(5)->get();
@@ -70,8 +73,7 @@ class HomeController extends Controller
         $user_tasks = $tasks->count();
         $tasks = $tasks->take(4);
 
-        $total_active_posts = Post::where('active', 1)->count();
-        $user_posts = Post::where('active', 1)->where('created_by', auth()->id())->count();
+
 
         return view(
             'cms.index',
@@ -85,8 +87,8 @@ class HomeController extends Controller
                 'total_active_tasks',
                 'total_completed_tasks',
                 'user_tasks',
-                'total_active_posts',
-                'user_posts'
+                'feeds_count',
+                'feeds_total_count'
             )
         );
     }
