@@ -163,7 +163,40 @@ class PermissionTableSeeder extends Seeder
         ]);
 
 
+        // customerFeedback
+        Permission::create([
+            'name' => 'create customerFeedback',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
+        Permission::create([
+            'name' => 'edit customerFeedback',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
+        Permission::create([
+            'name' => 'delete customerFeedback',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
 
+
+        // feeds
+        Permission::create([
+            'name' => 'create feeds',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
+        Permission::create([
+            'name' => 'edit feeds',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
+        Permission::create([
+            'name' => 'delete feeds',
+            'guard_name' => 'web',
+            'created_by' => $users->random()->id
+        ]);
 
 
 
@@ -211,7 +244,7 @@ class PermissionTableSeeder extends Seeder
         ]);
 
 
-        
+
 
         // Params
         Permission::create([
