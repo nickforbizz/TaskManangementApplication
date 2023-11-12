@@ -24,7 +24,7 @@ class ReportController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
-        
+
         return view('cms.reports.index', [
             'postsChartData' => $posts_report['chartData'],
             'postsYears' => $posts_report['years'],
@@ -39,22 +39,37 @@ class ReportController extends Controller
     {
         $year = request('year', Carbon::now()->year);
         $data = Post::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
-                    ->whereYear('created_at', $year)
-                    ->groupBy('month')
-                    ->get();
-    
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->get();
+
         $chartData = [];
         foreach ($data as $row) {
             $month = Carbon::create(null, $row->month)->format('F');
             $chartData[$month] = $row->count;
         }
-    
-        $fileName = 'post_report_'.$year;
-    
+
+        $fileName = 'post_report_' . $year;
+
         $export = new PostReportExport($data);
-    
-        return Excel::download($export, $fileName.'.xlsx');
-    
+
+        return Excel::download($export, $fileName . '.xlsx');
     }
 
+
+    public function generateReport(Request $request, ReportService $reportService)
+    {
+        $selectedYear = $request->get('year', Carbon::now()->year);
+        $type = $request->get('type');
+
+        if ($type == 'post') {
+            return $reportService->getCountByMonth(new Post, $selectedYear);
+        }
+
+        if ($type == 'user') {
+            return $reportService->getCountByMonth(new User, $selectedYear);
+        }
+
+        return $request;
+    }
 }

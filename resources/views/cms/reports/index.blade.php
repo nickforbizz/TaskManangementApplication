@@ -34,16 +34,16 @@
                     <div class="row">
                         <div class="form-group col-8">
                             <label for="posts_year">Select Year:</label>
-                            <select class="form-control" id="posts_year" name="year">
+                            <select class="form-control" id="posts_year" name="year" onchange="generate_report('post')">
                                 @foreach($postsYears as $year)
                                 <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>{{ $year }}</option>
                                 @endforeach
                             </select>
                         </div>
-    
+
                         <div class="form-group col-4">
                             <a href="{{ route('reports.download.csv') }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
-    
+
                         </div>
 
                     </div>
@@ -59,7 +59,7 @@
 
 
 
-        
+
         <div class="col-md-6 p-2">
             <div class="card">
                 <div class="card-body">
@@ -67,16 +67,16 @@
                     <div class="row">
                         <div class="form-group col-8">
                             <label for="users_year">Select Year:</label>
-                            <select class="form-control" id="users_year" name="year">
+                            <select class="form-control" id="users_year" name="year" onchange="generate_report('user')">
                                 @foreach($usersYears as $year)
                                 <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>{{ $year }}</option>
                                 @endforeach
                             </select>
                         </div>
-    
+
                         <div class="form-group col-4">
                             <a href="{{ route('reports.download.csv') }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
-    
+
                         </div>
 
                     </div>
@@ -106,35 +106,61 @@
     $(document).ready(function() {
         $('#posts_year').change(function() {
             var year = $(this).val();
-            window.location.href = '{{ route("reports.index") }}?year=' + year;
+            // window.location.href = '{{ route("reports.index") }}?year=' + year;
         });
-        
+
+
+
     });
-    
+
+
+    function generate_report(type) {
+        var year = +$('#'+type+'s_year').val();
+        $.ajax({
+            url: '{{ route("reports.generateReport") }}',
+            data: {
+                type,
+                year
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            method: 'POST',
+            success: function(response) {
+                let data = response.chartData;
+                loadChart(data, type+'sChart', type, year)
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+    }
+
     const post_selected_year = $('#posts_year').val();
-    var post_data = {!! json_encode($postsChartData) !!};
+    var post_data = {!!json_encode($postsChartData) !!};
     loadChart(post_data, 'postsChart', 'Post', post_selected_year)
-    
-    
+
+
     const user_selected_year = $('#users_year').val();
-    var user_data = {!! json_encode($usersChartData) !!};
+    var user_data = {!!json_encode($usersChartData) !!};
     loadChart(user_data, 'usersChart', 'User', user_selected_year)
 
     function loadChart(data, load_area, entity, selectedYear) {
+        entity = capitalize(entity);
         var labels = [];
         var values = [];
         for (var key in data) {
             labels.push(key);
             values.push(data[key]);
         }
-    
+
         var ctx = document.getElementById(load_area);
         var myChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: entity+' Count',
+                    label: entity + ' Count',
                     data: values,
                     borderColor: "#1d7af3",
                     pointBorderColor: "#FFF",
@@ -151,7 +177,7 @@
             options: {
                 title: {
                     display: true,
-                    text: entity+' Count by Month for Year ' + selectedYear
+                    text: entity + ' Count by Month for Year ' + selectedYear
                 },
                 scales: {
                     yAxes: [{

@@ -112,6 +112,7 @@ Route::middleware('cms')->group(function () {
  
 
     Route::post('/notifications//mark-as-read', [NotificationController::class, 'markNotification'])->name('notifications.markNotification');
+    Route::post('/reports/generate/', [ReportController::class, 'generateReport'])->name('reports.generateReport');
 });
 
 
