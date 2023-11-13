@@ -174,6 +174,10 @@
         var task_data = {!!json_encode($tasksChartData) !!};
         loadChart(task_data, 'tasksChart', 'Task', task_selected_year)
 
+        const feed_selected_year = $('#feeds_year').val();
+        var feed_data = {!!json_encode($feedsChartData) !!};
+        loadChart(feed_data, 'feedsChart', 'Feed', feed_selected_year)
+
         const post_selected_year = $('#posts_year').val();
         var post_data = {!!json_encode($postsChartData) !!};
         loadChart(post_data, 'postsChart', 'Post', post_selected_year)
