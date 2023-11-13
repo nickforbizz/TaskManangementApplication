@@ -24,8 +24,76 @@
             </li>
         </ul>
     </div>
+
+
     <div class="row">
 
+        <div class="col-md-6 p-2">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Tasks Report</h2>
+                    <div class="row">
+                        <div class="form-group col-8">
+                            <label for="tasks_year">Select Year:</label>
+                            <select class="form-control" id="tasks_year" name="year" onchange="generate_report('task')">
+                                @foreach($tasksYears as $year)
+                                <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <a href="{{ route('reports.download.csv') }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
+
+                        </div>
+
+                    </div>
+
+                    <canvas id="tasksChart" height="200"></canvas>
+
+
+                </div>
+                <!-- .card-body -->
+            </div>
+        </div>
+        <!-- .col-md-6 p-2 -->
+
+        <div class="col-md-6 p-2">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Feeds Report</h2>
+                    <div class="row">
+                        <div class="form-group col-8">
+                            <label for="feeds_year">Select Year:</label>
+                            <select class="form-control" id="feeds_year" name="year" onchange="generate_report('feed')">
+                                @foreach($feedsYears as $year)
+                                <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <a href="{{ route('reports.download.csv') }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
+
+                        </div>
+
+                    </div>
+
+                    <canvas id="feedsChart" height="200"></canvas>
+
+
+                </div>
+                <!-- .card-body -->
+            </div>
+        </div>
+        <!-- .col-md-6 p-2 -->
+
+    </div>
+    <!-- .row -->
+
+
+
+    <div class="row">
 
         <div class="col-md-6 p-2">
             <div class="card">
@@ -57,9 +125,6 @@
         </div>
         <!-- .col-md-6 p-2 -->
 
-
-
-
         <div class="col-md-6 p-2">
             <div class="card">
                 <div class="card-body">
@@ -90,9 +155,10 @@
         </div>
         <!-- .col-md-6 p-2 -->
 
-
-
     </div>
+    <!-- .row -->
+
+
 </div>
 <!-- .page-inner -->
 
@@ -104,18 +170,28 @@
 
 <script>
     $(document).ready(function() {
-        $('#posts_year').change(function() {
-            var year = $(this).val();
-            // window.location.href = '{{ route("reports.index") }}?year=' + year;
-        });
+        const task_selected_year = $('#tasks_year').val();
+        var task_data = {!!json_encode($tasksChartData) !!};
+        loadChart(task_data, 'tasksChart', 'Task', task_selected_year)
+
+        const feed_selected_year = $('#feeds_year').val();
+        var feed_data = {!!json_encode($feedsChartData) !!};
+        loadChart(feed_data, 'feedsChart', 'Feed', feed_selected_year)
+
+        const post_selected_year = $('#posts_year').val();
+        var post_data = {!!json_encode($postsChartData) !!};
+        loadChart(post_data, 'postsChart', 'Post', post_selected_year)
 
 
+        const user_selected_year = $('#users_year').val();
+        var user_data = {!!json_encode($usersChartData) !!};
+        loadChart(user_data, 'usersChart', 'User', user_selected_year)
 
     });
 
 
     function generate_report(type) {
-        var year = +$('#'+type+'s_year').val();
+        var year = +$('#' + type + 's_year').val();
         $.ajax({
             url: '{{ route("reports.generateReport") }}',
             data: {
@@ -128,7 +204,7 @@
             method: 'POST',
             success: function(response) {
                 let data = response.chartData;
-                loadChart(data, type+'sChart', type, year)
+                loadChart(data, type + 'sChart', type, year)
             },
             error: function(error) {
                 console.log(error);
@@ -136,15 +212,7 @@
         })
     }
 
-    const post_selected_year = $('#posts_year').val();
-    var post_data = {!!json_encode($postsChartData) !!};
-    loadChart(post_data, 'postsChart', 'Post', post_selected_year)
-
-
-    const user_selected_year = $('#users_year').val();
-    var user_data = {!!json_encode($usersChartData) !!};
-    loadChart(user_data, 'usersChart', 'User', user_selected_year)
-
+    
     function loadChart(data, load_area, entity, selectedYear) {
         entity = capitalize(entity);
         var labels = [];
