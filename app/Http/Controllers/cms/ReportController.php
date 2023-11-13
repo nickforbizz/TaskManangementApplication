@@ -5,6 +5,7 @@ namespace App\Http\Controllers\cms;
 use App\Exports\PostReportExport;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\Task;
 use App\Models\User;
 use App\Services\ReportService;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class ReportController extends Controller
         $selectedYear = $request->get('year', Carbon::now()->year);
 
         try {
+            $tasks_report = $reportService->getCountByMonth(new Task, $selectedYear);
             $posts_report = $reportService->getCountByMonth(new Post, $selectedYear);
             $users_report = $reportService->getCountByMonth(new User, $selectedYear);
         } catch (\Throwable $th) {
@@ -26,6 +28,8 @@ class ReportController extends Controller
         }
 
         return view('cms.reports.index', [
+            'tasksChartData' => $tasks_report['chartData'],
+            'tasksYears' => $tasks_report['years'],
             'postsChartData' => $posts_report['chartData'],
             'postsYears' => $posts_report['years'],
             'usersChartData' => $users_report['chartData'],
@@ -61,6 +65,10 @@ class ReportController extends Controller
     {
         $selectedYear = $request->get('year', Carbon::now()->year);
         $type = $request->get('type');
+
+        if ($type == 'task') {
+            return $reportService->getCountByMonth(new Task, $selectedYear);
+        }
 
         if ($type == 'post') {
             return $reportService->getCountByMonth(new Post, $selectedYear);
