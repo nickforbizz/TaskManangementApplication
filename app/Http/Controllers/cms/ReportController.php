@@ -61,6 +61,8 @@ class ReportController extends Controller
 
         $fileName = $type.'_report_' . $year;
 
+        // :TODO refactor the function, return custom headers
+
         $export = new EntityReportExport($data);
 
         return Excel::download($export, $fileName . '.xlsx');
