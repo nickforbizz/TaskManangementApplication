@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\cms;
 
-use App\Exports\PostReportExport;
+use App\Exports\EntityReportExport;
 use App\Http\Controllers\Controller;
 use App\Models\Feed;
 use App\Models\Post;
@@ -43,10 +43,12 @@ class ReportController extends Controller
     }
 
 
-    public function downloadCsv(Request $request)
+    public function downloadCsv(Request $request, $type)
     {
+        $model = ucwords($type);
+        $model = "App\\Models\\$model";
         $year = request('year', Carbon::now()->year);
-        $data = Post::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
+        $data = $model::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
             ->whereYear('created_at', $year)
             ->groupBy('month')
             ->get();
@@ -57,9 +59,9 @@ class ReportController extends Controller
             $chartData[$month] = $row->count;
         }
 
-        $fileName = 'post_report_' . $year;
+        $fileName = $type.'_report_' . $year;
 
-        $export = new PostReportExport($data);
+        $export = new EntityReportExport($data);
 
         return Excel::download($export, $fileName . '.xlsx');
     }
