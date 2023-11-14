@@ -2,11 +2,10 @@
 
 namespace App\Exports;
 
-use App\Model\Post;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class PostReportExport implements FromCollection, WithHeadings
+class EntityReportExport implements FromCollection, WithHeadings
 {
     protected $data;
 
