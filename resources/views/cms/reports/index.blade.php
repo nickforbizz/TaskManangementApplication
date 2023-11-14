@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="form-group col-4">
-                            <a href="{{ route('reports.download.csv', ['type' => 'task']) }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
+                            <a target="_blank" href="{{ route('reports.download.csv', ['type' => 'task']) }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
 
                         </div>
 
@@ -73,7 +73,7 @@
                         </div>
 
                         <div class="form-group col-4">
-                            <a href="{{ route('reports.download.csv', ['type' => 'feed']) }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
+                            <a target="_blank" href="{{ route('reports.download.csv', ['type' => 'feed']) }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
 
                         </div>
 
@@ -110,7 +110,7 @@
                         </div>
 
                         <div class="form-group col-4">
-                            <a href="{{ route('reports.download.csv', ['type' => 'post']) }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
+                            <a target="_blank" href="{{ route('reports.download.csv', ['type' => 'post']) }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
 
                         </div>
 
@@ -140,7 +140,7 @@
                         </div>
 
                         <div class="form-group col-4">
-                            <a href="{{ route('reports.download.csv', ['type' => 'user']) }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
+                            <a target="_blank" href="{{ route('reports.download.csv', ['type' => 'user']) }}" class="form-control  btn btn-primary btn-round mt-4">Download CSV</a>
 
                         </div>
 
