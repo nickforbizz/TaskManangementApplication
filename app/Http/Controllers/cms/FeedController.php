@@ -97,8 +97,7 @@ class FeedController extends Controller
      */
     public function show(Feed $feed)
     {
-        return response()
-            ->json($feed, 200, ['JSON_PRETTY_PRINT' => JSON_PRETTY_PRINT]);
+        return view('cms.feeds.view', compact('feed'));
     }
 
     /**
