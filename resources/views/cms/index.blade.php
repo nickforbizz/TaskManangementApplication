@@ -116,7 +116,7 @@
 							<small class="text-muted">{!! $task->title !!}</small>
 						</div>
 						<div class="d-flex ml-auto align-items-center">
-							<h6 class="text-info fw-bold"><a href="{{ route('tasks.show', $task->id) }}">view</a></h6>
+							<h6 class="text-info fw-bold"><a href="{{ route('tasks.show', $task->id) }}"><i class="fa fa-eye"></i></a></h6>
 						</div>
 					</div>
 					<div class="separator-dashed"></div>
@@ -153,7 +153,8 @@
 						@forelse($feeds as $feed)
 						<li class="feed-item feed-item-secondary">
 							<time class="date" datetime="9-25">{{ \Carbon\Carbon::parse($feed->created_at)->format('M d') }}</time>
-							<span class="text"> {{ $feed->title }} <a href="#" class="pull-right">View more >> </a></span>
+							
+							<span class="text"> {{ $feed->title }} <a href="{{ route('feeds.show', $feed->id) }}" class="pull-right text-info fw-bold"> <i class="fa fa-eye"></i>  </a></span>
 						</li>
 						@empty
 						<li class="feed-item feed-item-secondary">
