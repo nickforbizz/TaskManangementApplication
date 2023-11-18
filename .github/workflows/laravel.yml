@@ -30,4 +30,5 @@ jobs:
           port: ${{ secrets.FTP_PORT }}
           protocol: ftps
           log-level: standard
+          dangerous-clean-slate: true
           timeout: ${{ vars.DEPLOY_TIMEOUT }}
