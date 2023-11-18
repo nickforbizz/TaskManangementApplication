@@ -21,6 +21,9 @@ jobs:
         run: php artisan storage:link
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
+      - name: Debug FTP
+        run: |
+          lftp -e 'ls; bye' -u ${{ secrets.FTP_USERNAME }} -p ${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }}
       - name: 📂 Sync files ...
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -30,5 +33,4 @@ jobs:
           port: ${{ secrets.FTP_PORT }}
           protocol: ftps
           log-level: standard
-          dangerous-clean-slate: true
           timeout: ${{ vars.DEPLOY_TIMEOUT }}
