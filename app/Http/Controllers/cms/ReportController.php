@@ -48,22 +48,22 @@ class ReportController extends Controller
         $model = ucwords($type);
         $model = "App\\Models\\$model";
         $year = request('year', Carbon::now()->year);
-        $data = $model::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
+        $data = $model::select(DB::raw('MONTH(created_at) as month'), DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(*) as count'))
             ->whereYear('created_at', $year)
-            ->groupBy('month')
+            ->groupBy('year','month')
             ->get();
 
-        $chartData = [];
-        foreach ($data as $row) {
-            $month = Carbon::create(null, $row->month)->format('F');
-            $chartData[$month] = $row->count;
-        }
+
+
+        
 
         $fileName = $type.'_report_' . $year;
 
+        
         // :TODO refactor the function, return custom headers
-
-        $export = new EntityReportExport($data);
+        
+        // dd($data);
+        $export = new EntityReportExport($data, $type);
 
         return Excel::download($export, $fileName . '.xlsx');
     }
