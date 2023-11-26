@@ -12,6 +12,7 @@ class ViewsController extends Controller
 {
     public function index(Request $request)
     {
+        return view('auth.login');
         $tasks = Task::where('active', 1)->get();
         $posts = Post::where('active', 1)->orderBy('created_at', 'desc')->take(3)->get();
 
